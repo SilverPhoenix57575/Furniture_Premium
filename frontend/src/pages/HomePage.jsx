@@ -1,10 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MapPin, Calendar } from 'lucide-react';
-import { collections, products, rooms, journalPosts, testimonials } from '../mock';
+import { getProducts, getCollections, getRooms, getJournal, getTestimonials } from '../services/api';
 
 const HomePage = () => {
-  const featuredProducts = products.filter(p => p.featured);
+  const [collections, setCollections] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [rooms, setRooms] = useState([]);
+  const [journalPosts, setJournalPosts] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [collectionsData, productsData, roomsData, journalData, testimonialsData] = await Promise.all([
+          getCollections(),
+          getProducts({ featured: true }),
+          getRooms(),
+          getJournal(),
+          getTestimonials()
+        ]);
+        setCollections(collectionsData);
+        setFeaturedProducts(productsData);
+        setRooms(roomsData);
+        setJournalPosts(journalData);
+        setTestimonials(testimonialsData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center"><p className="text-xl">Loading...</p></div>;
+  }
 
   return (
     <div className="min-h-screen">

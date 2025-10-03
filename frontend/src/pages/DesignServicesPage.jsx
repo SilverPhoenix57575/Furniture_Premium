@@ -15,12 +15,23 @@ const DesignServicesPage = () => {
     message: ''
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Mock submission
-    console.log('Design consultation request:', formData);
-    toast.success('Thank you! Our design team will contact you within 24 hours.');
-    setFormData({ name: '', email: '', phone: '', projectType: '', budget: '', message: '' });
+    try {
+      const { submitConsultationRequest } = await import('../services/api');
+      await submitConsultationRequest({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        project_type: formData.projectType,
+        budget: formData.budget,
+        message: formData.message
+      });
+      toast.success('Thank you! Our design team will contact you within 24 hours.');
+      setFormData({ name: '', email: '', phone: '', projectType: '', budget: '', message: '' });
+    } catch (error) {
+      toast.error('Failed to submit request. Please try again.');
+    }
   };
 
   const services = [

@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Heart, SlidersHorizontal } from 'lucide-react';
-import { products, collections } from '../mock';
+import { getProducts, getCollections, addToWishlist } from '../services/api';
+import { toast } from 'sonner';
 
 const ProductListingPage = () => {
   const [searchParams] = useSearchParams();
@@ -11,8 +12,30 @@ const ProductListingPage = () => {
     style: '',
     priceRange: 'all'
   });
+  const [products, setProducts] = useState([]);
+  const [collections, setCollections] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('grid');
   const [showFilters, setShowFilters] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [productsData, collectionsData] = await Promise.all([
+          getProducts(),
+          getCollections()
+        ]);
+        setProducts(productsData);
+        setCollections(collectionsData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        toast.error('Failed to load products');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   const filteredProducts = useMemo(() => {
     return products.filter(product => {
@@ -31,18 +54,27 @@ const ProductListingPage = () => {
     });
   }, [filters]);
 
-  const addToWishlist = (productId, e) => {
+  const handleAddToWishlist = async (productId, e) => {
     e.preventDefault();
-    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    if (!wishlist.includes(productId)) {
-      wishlist.push(productId);
-      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    try {
+      await addToWishlist(productId);
+      toast.success('Added to wishlist');
       window.dispatchEvent(new Event('storage'));
+    } catch (error) {
+      if (error.response?.status === 400) {
+        toast.info('Already in wishlist');
+      } else {
+        toast.error('Failed to add to wishlist');
+      }
     }
   };
 
   const styles = [...new Set(products.map(p => p.style))];
   const rooms = [...new Set(products.map(p => p.room))];
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center"><p className="text-xl">Loading...</p></div>;
+  }
 
   return (
     <div className="min-h-screen pt-24 pb-16">
@@ -254,7 +286,7 @@ const ProductListingPage = () => {
                         className="w-full h-80 object-cover"
                       />
                       <button
-                        onClick={(e) => addToWishlist(product.id, e)}
+                        onClick={(e) => handleAddToWishlist(product.id, e)}
                         className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-colors"
                       >
                         <Heart className="w-5 h-5 text-gray-700" />

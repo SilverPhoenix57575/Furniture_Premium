@@ -198,3 +198,7 @@ logger = logging.getLogger(__name__)
 @app.get("/")
 def root():
     return {"message": "Pankaj Furniture API", "status": "running"}
+
+@app.get("/favicon.ico")
+def favicon():
+    return {"message": "No favicon"}

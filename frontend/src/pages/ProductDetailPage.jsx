@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Heart, Download, Share2, Ruler, Package, Sparkles, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
-import { products } from '../mock';
+import { getProduct, getProducts, addToWishlist, submitQuoteRequest } from '../services/api';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -10,12 +10,39 @@ import { toast } from 'sonner';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
-  const product = products.find(p => p.id === id);
+  const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedCustomizations, setSelectedCustomizations] = useState({});
   const [showQuoteModal, setShowQuoteModal] = useState(false);
   const [quoteForm, setQuoteForm] = useState({ name: '', email: '', phone: '', message: '' });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const productData = await getProduct(id);
+        setProduct(productData);
+        
+        const allProducts = await getProducts();
+        const related = allProducts.filter(p => 
+          p.id !== productData.id && 
+          (p.collection === productData.collection || p.room === productData.room)
+        ).slice(0, 3);
+        setRelatedProducts(related);
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center"><p className="text-xl">Loading...</p></div>;
+  }
 
   if (!product) {
     return (
@@ -28,31 +55,42 @@ const ProductDetailPage = () => {
     );
   }
 
-  const addToWishlist = () => {
-    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    if (!wishlist.includes(product.id)) {
-      wishlist.push(product.id);
-      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  const handleAddToWishlist = async () => {
+    try {
+      await addToWishlist(product.id);
       window.dispatchEvent(new Event('storage'));
       toast.success('Added to wishlist!');
-    } else {
-      toast.info('Already in wishlist');
+    } catch (error) {
+      if (error.response?.status === 400) {
+        toast.info('Already in wishlist');
+      } else {
+        toast.error('Failed to add to wishlist');
+      }
     }
   };
 
-  const handleQuoteSubmit = (e) => {
+  const handleQuoteSubmit = async (e) => {
     e.preventDefault();
-    // Mock submission
-    console.log('Quote request:', { product: product.name, ...quoteForm, customizations: selectedCustomizations });
-    toast.success('Quote request sent! We\'ll contact you soon.');
-    setShowQuoteModal(false);
-    setQuoteForm({ name: '', email: '', phone: '', message: '' });
+    try {
+      const customizationText = Object.entries(selectedCustomizations)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join(', ');
+      
+      await submitQuoteRequest({
+        ...quoteForm,
+        product_ids: product.id,
+        message: `${quoteForm.message}\n\nCustomizations: ${customizationText || 'None'}`
+      });
+      
+      toast.success('Quote request sent! We\'ll contact you soon.');
+      setShowQuoteModal(false);
+      setQuoteForm({ name: '', email: '', phone: '', message: '' });
+    } catch (error) {
+      toast.error('Failed to submit quote request');
+    }
   };
 
-  const relatedProducts = products.filter(p => 
-    p.id !== product.id && 
-    (p.collection === product.collection || p.room === product.room)
-  ).slice(0, 3);
+
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % product.images.length);
@@ -256,7 +294,7 @@ Pankaj Furniture - Three Generations of Craftsmanship
                   Find in Showroom
                 </Link>
                 
-                <button onClick={addToWishlist} className="btn-secondary py-3">
+                <button onClick={handleAddToWishlist} className="btn-secondary py-3">
                   <Heart className="inline w-5 h-5 mr-2" />
                   Add to Wishlist
                 </button>
