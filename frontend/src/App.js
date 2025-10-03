@@ -16,6 +16,7 @@ import AboutPage from './pages/AboutPage';
 import DesignServicesPage from './pages/DesignServicesPage';
 import StoreLocatorPage from './pages/StoreLocatorPage';
 import WishlistPage from './pages/WishlistPage';
+import ComparePage from './pages/ComparePage';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path="/design-services" element={<DesignServicesPage />} />
             <Route path="/store-locator" element={<StoreLocatorPage />} />
             <Route path="/wishlist" element={<WishlistPage />} />
+            <Route path="/compare" element={<ComparePage />} />
           </Routes>
         </main>
         <Footer />

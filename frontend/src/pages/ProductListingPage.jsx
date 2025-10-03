@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { Heart, SlidersHorizontal } from 'lucide-react';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { Heart, SlidersHorizontal, GitCompare } from 'lucide-react';
 import { getProducts, getCollections, addToWishlist } from '../services/api';
 import { toast } from 'sonner';
 
@@ -17,6 +17,8 @@ const ProductListingPage = () => {
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('grid');
   const [showFilters, setShowFilters] = useState(false);
+  const [compareList, setCompareList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +54,7 @@ const ProductListingPage = () => {
       
       return true;
     });
-  }, [filters]);
+  }, [products, filters]);
 
   const handleAddToWishlist = async (productId, e) => {
     e.preventDefault();
@@ -80,13 +82,24 @@ const ProductListingPage = () => {
     <div className="min-h-screen pt-24 pb-16">
       <div className="container">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Our Collections
-          </h1>
-          <p className="text-lg text-gray-600">
-            {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'} of exceptional craftsmanship
-          </p>
+        <div className="mb-12 flex justify-between items-end">
+          <div>
+            <h1 className="text-4xl md:text-5xl mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+              Our Collections
+            </h1>
+            <p className="text-lg text-gray-600">
+              {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'} of exceptional craftsmanship
+            </p>
+          </div>
+          {compareList.length > 0 && (
+            <button
+              onClick={() => navigate(`/compare?ids=${compareList.join(',')}`)}
+              className="btn-primary flex items-center gap-2"
+            >
+              <GitCompare className="w-5 h-5" />
+              Compare ({compareList.length})
+            </button>
+          )}
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
@@ -274,12 +287,9 @@ const ProductListingPage = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredProducts.map((product) => (
-                  <Link
-                    key={product.id}
-                    to={`/product/${product.id}`}
-                    className="group card-hover relative"
-                  >
-                    <div className="relative overflow-hidden rounded-lg mb-4 image-hover">
+                  <div key={product.id} className="group card-hover relative">
+                    <Link to={`/product/${product.id}`}>
+                      <div className="relative overflow-hidden rounded-lg mb-4 image-hover">
                       <img
                         src={product.images[0]}
                         alt={product.name}
@@ -302,7 +312,27 @@ const ProductListingPage = () => {
                     </h3>
                     <p className="text-gray-600 text-sm mb-2">{product.collection.toUpperCase()}</p>
                     <p className="text-emerald-900 font-semibold text-lg">₹{product.price.toLocaleString('en-IN')}</p>
-                  </Link>
+                    </Link>
+                    <label className="flex items-center gap-2 mt-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={compareList.includes(product.id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            if (compareList.length >= 3) {
+                              toast.info('You can compare up to 3 products');
+                              return;
+                            }
+                            setCompareList([...compareList, product.id]);
+                          } else {
+                            setCompareList(compareList.filter(id => id !== product.id));
+                          }
+                        }}
+                        className="w-4 h-4"
+                      />
+                      <span className="text-sm text-gray-600">Add to compare</span>
+                    </label>
+                  </div>
                 ))}
               </div>
             )}

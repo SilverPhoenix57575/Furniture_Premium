@@ -63,6 +63,14 @@ class WishlistItem(BaseModel):
     session_id: str
     product_id: str
 
+class Review(BaseModel):
+    product_id: str
+    customer_name: str
+    customer_email: EmailStr
+    rating: int
+    review_text: str
+    photo_url: Optional[str] = None
+
 # Products Endpoints
 @api_router.get("/products")
 def get_products(
@@ -231,6 +239,60 @@ def remove_from_wishlist(session_id: str, product_id: str):
     conn.commit()
     conn.close()
     return {"message": "Removed from wishlist"}
+
+# Reviews
+@api_router.post("/reviews")
+def create_review(review: Review):
+    if review.rating < 1 or review.rating > 5:
+        raise HTTPException(status_code=400, detail="Rating must be between 1 and 5")
+    
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO reviews (product_id, customer_name, customer_email, rating, review_text, photo_url) VALUES (?, ?, ?, ?, ?, ?)",
+        (review.product_id, review.customer_name, review.customer_email, review.rating, review.review_text, review.photo_url)
+    )
+    conn.commit()
+    review_id = cursor.lastrowid
+    conn.close()
+    return {"id": review_id, "message": "Review submitted successfully"}
+
+@api_router.get("/reviews/{product_id}")
+def get_product_reviews(product_id: str):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT id, product_id, customer_name, rating, review_text, photo_url, created_at FROM reviews WHERE product_id = ? ORDER BY created_at DESC",
+        (product_id,)
+    )
+    reviews = []
+    for row in cursor.fetchall():
+        reviews.append({
+            "id": row[0],
+            "product_id": row[1],
+            "customer_name": row[2],
+            "rating": row[3],
+            "review_text": row[4],
+            "photo_url": row[5],
+            "created_at": row[6]
+        })
+    conn.close()
+    return reviews
+
+@api_router.get("/reviews/{product_id}/stats")
+def get_review_stats(product_id: str):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT COUNT(*), AVG(rating) FROM reviews WHERE product_id = ?",
+        (product_id,)
+    )
+    row = cursor.fetchone()
+    conn.close()
+    return {
+        "total_reviews": row[0] or 0,
+        "average_rating": round(row[1], 1) if row[1] else 0
+    }
 
 app.include_router(api_router)
 

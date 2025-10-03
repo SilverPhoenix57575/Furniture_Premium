@@ -102,4 +102,20 @@ export const removeFromWishlist = async (productId) => {
   return response.data;
 };
 
+// Reviews
+export const submitReview = async (data) => {
+  const response = await api.post('/reviews', data);
+  return response.data;
+};
+
+export const getProductReviews = async (productId) => {
+  const response = await api.get(`/reviews/${productId}`);
+  return response.data;
+};
+
+export const getReviewStats = async (productId) => {
+  const response = await api.get(`/reviews/${productId}/stats`);
+  return response.data;
+};
+
 export default api;

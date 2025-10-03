@@ -7,6 +7,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { toast } from 'sonner';
+import ProductReviews from '../components/ProductReviews';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -364,9 +365,12 @@ Pankaj Furniture - Three Generations of Craftsmanship
           </div>
         </div>
 
+        {/* Reviews Section */}
+        <ProductReviews productId={id} />
+
         {/* Related Products */}
         {relatedProducts.length > 0 && (
-          <div>
+          <div className="mt-16">
             <h2 className="text-3xl mb-8" style={{ fontFamily: 'Playfair Display, serif' }}>
               Complete the Look
             </h2>
