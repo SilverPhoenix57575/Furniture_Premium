@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
           {/* Brand Section - Larger */}
           <div className="lg:col-span-4">
-            <h3 className="text-3xl font-bold text-white mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+            <h3 className="text-3xl font-bold text-white mb-4 mt-16" style={{ fontFamily: 'Playfair Display, serif' }}>
               Pankaj Furniture
             </h3>
             <p className="text-stone-400 mb-6 leading-relaxed text-base">
@@ -55,7 +55,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="lg:col-span-2">
-            <h4 className="text-white font-semibold mb-6 text-lg">Explore</h4>
+            <h4 className="text-white font-semibold mb-6 text-lg mt-16">Explore</h4>
             <ul className="space-y-3">
               <li>
                 <Link to="/collections" className="text-stone-400 hover:text-emerald-400 transition-colors text-sm inline-block hover:translate-x-1 duration-200">
@@ -87,7 +87,7 @@ const Footer = () => {
 
           {/* Services */}
           <div className="lg:col-span-3">
-            <h4 className="text-white font-semibold mb-6 text-lg">Services</h4>
+            <h4 className="text-white font-semibold mb-6 text-lg mt-16">Services</h4>
             <ul className="space-y-3">
               <li>
                 <Link to="/design-services" className="text-stone-400 hover:text-emerald-400 transition-colors text-sm inline-block hover:translate-x-1 duration-200">
@@ -114,7 +114,7 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div className="lg:col-span-3">
-            <h4 className="text-white font-semibold mb-6 text-lg">Get In Touch</h4>
+            <h4 className="text-white font-semibold mb-6 text-lg mt-16">Get In Touch</h4>
             <ul className="space-y-4">
               <li>
                 <div className="flex items-start space-x-3 group">
@@ -152,7 +152,7 @@ const Footer = () => {
                 </div>
               </li>
               <li>
-                <div className="flex items-start space-x-3 mt-6 pt-6 border-t border-stone-800">
+                <div className="flex items-start space-x-3 mt-6 pt-6 border-t border-stone-800 mb-8">
                   <Clock className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                   <div className="text-sm">
                     <p className="text-stone-400">
