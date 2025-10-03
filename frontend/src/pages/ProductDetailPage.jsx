@@ -111,6 +111,35 @@ Pankaj Furniture - Three Generations of Craftsmanship
     toast.success('Tearsheet downloaded!');
   };
 
+  const shareProduct = async () => {
+    const shareData = {
+      title: `${product.name} - Pankaj Furniture`,
+      text: `Check out this ${product.name} from Pankaj Furniture! ₹${product.price.toLocaleString('en-IN')}`,
+      url: window.location.href
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        toast.success('Shared successfully!');
+      } else {
+        // Fallback: Copy link to clipboard
+        await navigator.clipboard.writeText(window.location.href);
+        toast.success('Link copied to clipboard!');
+      }
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        // Fallback: Copy link to clipboard
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          toast.success('Link copied to clipboard!');
+        } catch (clipboardErr) {
+          toast.error('Unable to share. Please copy the URL manually.');
+        }
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen pt-24 pb-16">
       <div className="container">
@@ -241,7 +270,10 @@ Pankaj Furniture - Three Generations of Craftsmanship
                   <Download className="inline w-4 h-4 mr-2" />
                   Download Tearsheet
                 </button>
-                <button className="flex-1 text-sm text-gray-700 hover:text-emerald-800 transition-colors py-2">
+                <button 
+                  onClick={shareProduct}
+                  className="flex-1 text-sm text-gray-700 hover:text-emerald-800 transition-colors py-2"
+                >
                   <Share2 className="inline w-4 h-4 mr-2" />
                   Share
                 </button>
