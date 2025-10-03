@@ -1,75 +1,200 @@
-from fastapi import FastAPI, APIRouter
-from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
-import os
+from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, EmailStr
+from typing import List, Optional
+import json
 import logging
 from pathlib import Path
-from pydantic import BaseModel, Field
-from typing import List
-import uuid
-from datetime import datetime
-
+from database import get_db
 
 ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
+DATA_DIR = ROOT_DIR / "data"
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
-
-# Create the main app without a prefix
-app = FastAPI()
-
-# Create a router with the /api prefix
+app = FastAPI(title="Pankaj Furniture API")
 api_router = APIRouter(prefix="/api")
 
-
-# Define Models
-class StatusCheck(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
-
-class StatusCheckCreate(BaseModel):
-    client_name: str
-
-# Add your routes to the router instead of directly to app
-@api_router.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-@api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
-    status_dict = input.dict()
-    status_obj = StatusCheck(**status_dict)
-    _ = await db.status_checks.insert_one(status_obj.dict())
-    return status_obj
-
-@api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    status_checks = await db.status_checks.find().to_list(1000)
-    return [StatusCheck(**status_check) for status_check in status_checks]
-
-# Include the router in the main app
-app.include_router(api_router)
-
+# CORS
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://localhost:3001"],
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+# Load JSON data
+def load_json(filename):
+    with open(DATA_DIR / filename, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+products_data = load_json('products.json')
+collections_data = load_json('collections.json')
+static_data = load_json('static.json')
+
+# Pydantic Models
+class QuoteRequest(BaseModel):
+    name: str
+    email: EmailStr
+    phone: str
+    product_ids: str
+    message: Optional[str] = None
+
+class ConsultationRequest(BaseModel):
+    name: str
+    email: EmailStr
+    phone: str
+    project_type: str
+    budget: Optional[str] = None
+    message: Optional[str] = None
+
+class ContactMessage(BaseModel):
+    name: str
+    email: EmailStr
+    subject: Optional[str] = None
+    message: str
+
+class WishlistItem(BaseModel):
+    session_id: str
+    product_id: str
+
+# Products Endpoints
+@api_router.get("/products")
+def get_products(
+    collection: Optional[str] = None,
+    room: Optional[str] = None,
+    style: Optional[str] = None,
+    featured: Optional[bool] = None
+):
+    filtered = products_data
+    if collection:
+        filtered = [p for p in filtered if p['collection'] == collection]
+    if room:
+        filtered = [p for p in filtered if p['room'] == room]
+    if style:
+        filtered = [p for p in filtered if p['style'] == style]
+    if featured is not None:
+        filtered = [p for p in filtered if p['featured'] == featured]
+    return filtered
+
+@api_router.get("/products/{product_id}")
+def get_product(product_id: str):
+    product = next((p for p in products_data if p['id'] == product_id), None)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+# Collections Endpoints
+@api_router.get("/collections")
+def get_collections():
+    return collections_data
+
+@api_router.get("/collections/{collection_id}")
+def get_collection(collection_id: str):
+    collection = next((c for c in collections_data if c['id'] == collection_id), None)
+    if not collection:
+        raise HTTPException(status_code=404, detail="Collection not found")
+    return collection
+
+# Static Content Endpoints
+@api_router.get("/rooms")
+def get_rooms():
+    return static_data['rooms']
+
+@api_router.get("/journal")
+def get_journal():
+    return static_data['journal']
+
+@api_router.get("/testimonials")
+def get_testimonials():
+    return static_data['testimonials']
+
+@api_router.get("/store-location")
+def get_store_location():
+    return static_data['storeLocation']
+
+# Quote Request
+@api_router.post("/quote-request")
+def create_quote_request(request: QuoteRequest):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO quote_requests (name, email, phone, product_ids, message) VALUES (?, ?, ?, ?, ?)",
+        (request.name, request.email, request.phone, request.product_ids, request.message)
+    )
+    conn.commit()
+    request_id = cursor.lastrowid
+    conn.close()
+    return {"id": request_id, "message": "Quote request submitted successfully"}
+
+# Consultation Request
+@api_router.post("/consultation-request")
+def create_consultation_request(request: ConsultationRequest):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO consultation_requests (name, email, phone, project_type, budget, message) VALUES (?, ?, ?, ?, ?, ?)",
+        (request.name, request.email, request.phone, request.project_type, request.budget, request.message)
+    )
+    conn.commit()
+    request_id = cursor.lastrowid
+    conn.close()
+    return {"id": request_id, "message": "Consultation request submitted successfully"}
+
+# Contact Message
+@api_router.post("/contact")
+def create_contact_message(message: ContactMessage):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)",
+        (message.name, message.email, message.subject, message.message)
+    )
+    conn.commit()
+    message_id = cursor.lastrowid
+    conn.close()
+    return {"id": message_id, "message": "Message sent successfully"}
+
+# Wishlist
+@api_router.post("/wishlist")
+def add_to_wishlist(item: WishlistItem):
+    conn = get_db()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "INSERT INTO wishlist (session_id, product_id) VALUES (?, ?)",
+            (item.session_id, item.product_id)
+        )
+        conn.commit()
+        item_id = cursor.lastrowid
+        conn.close()
+        return {"id": item_id, "message": "Added to wishlist"}
+    except:
+        conn.close()
+        raise HTTPException(status_code=400, detail="Item already in wishlist")
+
+@api_router.get("/wishlist/{session_id}")
+def get_wishlist(session_id: str):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT product_id FROM wishlist WHERE session_id = ?", (session_id,))
+    items = [row[0] for row in cursor.fetchall()]
+    conn.close()
+    return items
+
+@api_router.delete("/wishlist/{session_id}/{product_id}")
+def remove_from_wishlist(session_id: str, product_id: str):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM wishlist WHERE session_id = ? AND product_id = ?", (session_id, product_id))
+    conn.commit()
+    conn.close()
+    return {"message": "Removed from wishlist"}
+
+app.include_router(api_router)
+
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
+@app.get("/")
+def root():
+    return {"message": "Pankaj Furniture API", "status": "running"}

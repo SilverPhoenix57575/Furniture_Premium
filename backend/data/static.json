@@ -1,0 +1,71 @@
+{
+  "rooms": [
+    {"id": "living", "name": "Living Room", "image": "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=800&h=600&fit=crop"},
+    {"id": "dining", "name": "Dining Room", "image": "https://images.unsplash.com/photo-1617806118233-18e1de247200?w=800&h=600&fit=crop"},
+    {"id": "bedroom", "name": "Bedroom", "image": "https://images.unsplash.com/photo-1505693314120-0d443867891c?w=800&h=600&fit=crop"},
+    {"id": "study", "name": "Study", "image": "https://images.unsplash.com/photo-1594620302200-9a762244a156?w=800&h=600&fit=crop"},
+    {"id": "outdoor", "name": "Outdoor", "image": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=600&fit=crop"}
+  ],
+  "journal": [
+    {
+      "id": "j1",
+      "title": "The Art of Hand-Carved Furniture",
+      "excerpt": "Discover how our master artisans transform raw wood into timeless masterpieces through centuries-old techniques.",
+      "image": "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=800&h=600&fit=crop",
+      "date": "2024-03-15",
+      "category": "Craftsmanship"
+    },
+    {
+      "id": "j2",
+      "title": "Sustainable Sourcing: Our Commitment",
+      "excerpt": "Learn about our journey to ensure every piece of wood comes from responsibly managed forests.",
+      "image": "https://images.unsplash.com/photo-1542435503-956c469947f6?w=800&h=600&fit=crop",
+      "date": "2024-03-10",
+      "category": "Sustainability"
+    },
+    {
+      "id": "j3",
+      "title": "Mixing Heritage with Modern Design",
+      "excerpt": "Interior designer tips on blending traditional Indian furniture with contemporary aesthetics.",
+      "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop",
+      "date": "2024-03-05",
+      "category": "Design Inspiration"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "t1",
+      "name": "Arjun Mehta",
+      "role": "Interior Designer",
+      "content": "Pankaj Furniture has been my go-to for heritage pieces. The craftsmanship is unparalleled, and my clients are always thrilled.",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop"
+    },
+    {
+      "id": "t2",
+      "name": "Sneha Patel",
+      "role": "Homeowner",
+      "content": "We furnished our entire home with pieces from Pankaj Furniture. Each item is a work of art that tells a story.",
+      "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop"
+    },
+    {
+      "id": "t3",
+      "name": "Ravi Kumar",
+      "role": "Architect",
+      "content": "The attention to detail and quality of materials is exceptional. These pieces will last for generations.",
+      "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop"
+    }
+  ],
+  "storeLocation": {
+    "address": "Plot No-97, 7th St, Bapuji Nagar, Bhubaneswar, Odisha 751009",
+    "phone": "+91 98765 43210",
+    "email": "debipanda27@gmail.com",
+    "hours": {
+      "weekday": "10:00 AM - 8:00 PM",
+      "weekend": "10:00 AM - 9:00 PM"
+    },
+    "coordinates": {
+      "lat": 20.2961,
+      "lng": 85.8245
+    }
+  }
+}

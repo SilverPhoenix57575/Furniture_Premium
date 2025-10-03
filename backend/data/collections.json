@@ -1,0 +1,30 @@
+[
+  {
+    "id": "heritage",
+    "name": "Heritage Collection",
+    "description": "Timeless pieces that celebrate traditional craftsmanship with modern functionality",
+    "image": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=800&fit=crop",
+    "featured": true
+  },
+  {
+    "id": "contemporary",
+    "name": "Contemporary Living",
+    "description": "Clean lines and minimalist aesthetics for the modern home",
+    "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&h=800&fit=crop",
+    "featured": true
+  },
+  {
+    "id": "artisan",
+    "name": "Artisan Series",
+    "description": "Handcrafted masterpieces showcasing exceptional woodworking artistry",
+    "image": "https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=1200&h=800&fit=crop",
+    "featured": true
+  },
+  {
+    "id": "outdoor",
+    "name": "Outdoor Elegance",
+    "description": "Weather-resistant luxury for your outdoor living spaces",
+    "image": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&h=800&fit=crop",
+    "featured": false
+  }
+]

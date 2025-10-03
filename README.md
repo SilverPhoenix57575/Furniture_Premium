@@ -13,7 +13,8 @@ A modern, full-stack furniture e-commerce website built with React and FastAPI.
 
 ### Backend
 - FastAPI
-- MongoDB with Motor (async driver)
+- SQLite (built-in, no installation needed)
+- JSON files for static content
 - Python 3.8+
 
 ## Prerequisites
@@ -21,7 +22,7 @@ A modern, full-stack furniture e-commerce website built with React and FastAPI.
 Before you begin, ensure you have the following installed:
 - **Node.js** (v16 or higher) - [Download](https://nodejs.org/)
 - **Python** (v3.8 or higher) - [Download](https://www.python.org/)
-- **MongoDB** - [Download](https://www.mongodb.com/try/download/community) or use MongoDB Atlas
+- **No database installation needed** - SQLite is built into Python
 
 ## Installation & Setup
 
@@ -56,34 +57,23 @@ The frontend will start at **http://localhost:3000**
 # Navigate to backend directory
 cd backend
 
-# Create a virtual environment (optional but recommended)
+# Install dependencies (no virtual environment needed for quick start)
+pip install -r requirements.txt
+
+# Or with virtual environment (recommended):
 python -m venv venv
-
-# Activate virtual environment
-# On Windows:
-venv\Scripts\activate
-# On macOS/Linux:
-source venv/bin/activate
-
-# Install dependencies
+venv\Scripts\activate  # Windows
+source venv/bin/activate  # macOS/Linux
 pip install -r requirements.txt
 ```
 
-### 4. Environment Configuration
+### 4. Database Setup
 
-Create a `.env` file in the `backend` directory:
+**No manual setup needed!** The SQLite database (`furniture.db`) is automatically created when you start the server.
 
+The `.env` file is already configured with:
 ```env
-MONGO_URL=mongodb://localhost:27017
-DB_NAME=pankaj_furniture
-CORS_ORIGINS=http://localhost:3000
-```
-
-For MongoDB Atlas, use:
-```env
-MONGO_URL=mongodb+srv://<username>:<password>@cluster.mongodb.net/
-DB_NAME=pankaj_furniture
-CORS_ORIGINS=http://localhost:3000
+CORS_ORIGINS=http://localhost:3000,http://localhost:3001
 ```
 
 ### 5. Start the Backend Server
@@ -93,26 +83,31 @@ CORS_ORIGINS=http://localhost:3000
 cd backend
 
 # Start the FastAPI server
-uvicorn server:app --reload --host 0.0.0.0 --port 8000
+uvicorn server:app --reload
 ```
 
-The backend API will be available at **http://localhost:8000**
+The backend API will be available at:
+- **http://127.0.0.1:8000** - API endpoints
+- **http://127.0.0.1:8000/docs** - Interactive API documentation (Swagger UI)
+- **http://127.0.0.1:8000/api/products** - Example: Get all products
 
 ## Running the Application
 
 1. **Start Backend** (Terminal 1):
    ```bash
-   cd backend
+   cd Furniture-by-emergent/backend
    uvicorn server:app --reload
    ```
 
 2. **Start Frontend** (Terminal 2):
    ```bash
-   cd frontend
+   cd Furniture-by-emergent/frontend
    npm start
    ```
 
 3. Open your browser and navigate to **http://localhost:3000**
+
+4. Test the API at **http://127.0.0.1:8000/docs**
 
 ## Common Issues & Solutions
 
@@ -131,11 +126,13 @@ rm -rf node_modules package-lock.json
 npm install --legacy-peer-deps
 ```
 
-### Issue: Backend won't start - MongoDB connection error
+### Issue: Backend won't start - Module not found
 **Solution:**
-- Ensure MongoDB is running locally, or
-- Check your MongoDB Atlas connection string in `.env`
-- Verify network connectivity
+```bash
+cd Furniture-by-emergent/backend
+pip install -r requirements.txt
+uvicorn server:app --reload
+```
 
 ### Issue: Port 3000 or 8000 already in use
 **Solution:**
@@ -165,9 +162,15 @@ Furniture-by-emergent/
 │   └── package.json
 │
 ├── backend/                 # FastAPI backend
+│   ├── data/               # JSON data files
+│   │   ├── products.json   # Product catalog
+│   │   ├── collections.json # Collections
+│   │   └── static.json     # Rooms, journal, testimonials
 │   ├── server.py           # Main server file
+│   ├── database.py         # SQLite database setup
+│   ├── furniture.db        # SQLite database (auto-created)
 │   ├── requirements.txt    # Python dependencies
-│   └── .env               # Environment variables (create this)
+│   └── .env               # Environment variables
 │
 └── README.md
 ```
@@ -187,19 +190,50 @@ Furniture-by-emergent/
 
 - ✅ Product browsing and filtering
 - ✅ Product detail pages with image galleries
-- ✅ Wishlist functionality (localStorage)
-- ✅ Quote request forms
-- ✅ Design consultation booking
+- ✅ Wishlist functionality (database-backed)
+- ✅ Quote request forms (saved to database)
+- ✅ Design consultation booking (saved to database)
 - ✅ Responsive design
 - ✅ Store locator
-- ⚠️ Backend API integration (in progress)
+- ✅ Backend API with SQLite database
+- ✅ RESTful API endpoints
+- ⚠️ Frontend-Backend integration (pending)
 - ⚠️ Email notifications (pending)
 
 ## Development Notes
 
 - The frontend currently uses mock data from `src/mock.js`
-- Backend API endpoints need to be implemented for full functionality
+- Backend API is fully functional with all endpoints ready
+- Frontend needs to be updated to use API endpoints instead of mock data
 - Email service configuration required for form submissions
+
+## API Endpoints
+
+### Products
+- `GET /api/products` - List all products (supports filters: collection, room, style, featured)
+- `GET /api/products/{id}` - Get single product details
+
+### Collections
+- `GET /api/collections` - List all collections
+- `GET /api/collections/{id}` - Get single collection
+
+### Static Content
+- `GET /api/rooms` - List all rooms
+- `GET /api/journal` - List journal posts
+- `GET /api/testimonials` - List testimonials
+- `GET /api/store-location` - Get store information
+
+### Forms (POST)
+- `POST /api/quote-request` - Submit quote request
+- `POST /api/consultation-request` - Submit consultation request
+- `POST /api/contact` - Send contact message
+
+### Wishlist
+- `POST /api/wishlist` - Add item to wishlist
+- `GET /api/wishlist/{session_id}` - Get user's wishlist
+- `DELETE /api/wishlist/{session_id}/{product_id}` - Remove from wishlist
+
+**Interactive API Documentation:** http://127.0.0.1:8000/docs
 
 ## Contributing
 
