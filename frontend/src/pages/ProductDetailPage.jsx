@@ -237,20 +237,20 @@ Pankaj Furniture - Three Generations of Craftsmanship
           {/* Product Info */}
           <div>
             <div className="mb-4">
-              <span className="text-sm font-medium text-emerald-800 uppercase tracking-wide">
+              <span className="text-xs md:text-sm font-medium text-emerald-800 uppercase tracking-wide">
                 {product.collection}
               </span>
             </div>
             
-            <h1 className="text-4xl mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
               {product.name}
             </h1>
             
-            <p className="text-3xl font-semibold text-emerald-900 mb-6">
+            <p className="text-2xl md:text-3xl font-semibold text-emerald-900 mb-6">
               ₹{product.price.toLocaleString('en-IN')}
             </p>
 
-            <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+            <p className="text-base md:text-lg text-gray-700 mb-8 leading-relaxed">
               {product.description}
             </p>
 
@@ -259,13 +259,13 @@ Pankaj Furniture - Three Generations of Craftsmanship
               <div className="mb-8 space-y-6">
                 {Object.entries(product.customizations).map(([key, options]) => (
                   <div key={key}>
-                    <h3 className="font-semibold mb-3 capitalize">{key}</h3>
+                    <h3 className="text-sm md:text-base font-semibold mb-3 capitalize">{key}</h3>
                     <div className="flex flex-wrap gap-3">
                       {options.map((option) => (
                         <button
                           key={option}
                           onClick={() => setSelectedCustomizations({ ...selectedCustomizations, [key]: option })}
-                          className={`px-4 py-2 border-2 rounded-lg transition-all ${
+                          className={`px-3 md:px-4 py-2 border-2 rounded-lg transition-all text-sm md:text-base ${
                             selectedCustomizations[key] === option
                               ? 'border-emerald-900 bg-emerald-50'
                               : 'border-gray-300 hover:border-emerald-700'
@@ -284,34 +284,36 @@ Pankaj Furniture - Three Generations of Craftsmanship
             <div className="space-y-4 mb-8">
               <button
                 onClick={() => setShowQuoteModal(true)}
-                className="w-full btn-primary text-lg py-4"
+                className="w-full btn-primary text-base md:text-lg py-3 md:py-4"
               >
                 Request a Quote
               </button>
               
               <div className="grid grid-cols-2 gap-4">
-                <Link to="/store-locator" className="btn-secondary text-center py-3">
-                  <MapPin className="inline w-5 h-5 mr-2" />
-                  Find in Showroom
+                <Link to="/store-locator" className="btn-secondary text-center py-3 text-sm md:text-base">
+                  <MapPin className="inline w-4 md:w-5 h-4 md:h-5 mr-2" />
+                  <span className="hidden md:inline">Find in Showroom</span>
+                  <span className="md:hidden">Showroom</span>
                 </Link>
                 
-                <button onClick={handleAddToWishlist} className="btn-secondary py-3">
-                  <Heart className="inline w-5 h-5 mr-2" />
-                  Add to Wishlist
+                <button onClick={handleAddToWishlist} className="btn-secondary py-3 text-sm md:text-base">
+                  <Heart className="inline w-4 md:w-5 h-4 md:h-5 mr-2" />
+                  <span className="hidden md:inline">Add to Wishlist</span>
+                  <span className="md:hidden">Wishlist</span>
                 </button>
               </div>
 
               <div className="flex gap-4">
                 <button 
                   onClick={downloadTearsheet}
-                  className="flex-1 text-sm text-gray-700 hover:text-emerald-800 transition-colors py-2"
+                  className="flex-1 text-xs md:text-sm text-gray-700 hover:text-emerald-800 transition-colors py-2"
                 >
                   <Download className="inline w-4 h-4 mr-2" />
                   Download Tearsheet
                 </button>
                 <button 
                   onClick={shareProduct}
-                  className="flex-1 text-sm text-gray-700 hover:text-emerald-800 transition-colors py-2"
+                  className="flex-1 text-xs md:text-sm text-gray-700 hover:text-emerald-800 transition-colors py-2"
                 >
                   <Share2 className="inline w-4 h-4 mr-2" />
                   Share
@@ -324,11 +326,11 @@ Pankaj Furniture - Three Generations of Craftsmanship
               <div className="space-y-6">
                 {/* Details & Dimensions */}
                 <div>
-                  <h3 className="font-semibold flex items-center mb-3">
-                    <Ruler className="w-5 h-5 mr-2 text-emerald-800" />
+                  <h3 className="text-sm md:text-base font-semibold flex items-center mb-3">
+                    <Ruler className="w-4 md:w-5 h-4 md:h-5 mr-2 text-emerald-800" />
                     Details & Dimensions
                   </h3>
-                  <div className="text-gray-700 space-y-2">
+                  <div className="text-sm md:text-base text-gray-700 space-y-2">
                     <p><span className="font-medium">Width:</span> {product.dimensions.width} cm</p>
                     <p><span className="font-medium">Depth:</span> {product.dimensions.depth} cm</p>
                     <p><span className="font-medium">Height:</span> {product.dimensions.height} cm</p>
@@ -337,11 +339,11 @@ Pankaj Furniture - Three Generations of Craftsmanship
 
                 {/* Materials */}
                 <div>
-                  <h3 className="font-semibold flex items-center mb-3">
-                    <Package className="w-5 h-5 mr-2 text-emerald-800" />
+                  <h3 className="text-sm md:text-base font-semibold flex items-center mb-3">
+                    <Package className="w-4 md:w-5 h-4 md:h-5 mr-2 text-emerald-800" />
                     Materials & Care
                   </h3>
-                  <ul className="text-gray-700 space-y-1">
+                  <ul className="text-sm md:text-base text-gray-700 space-y-1">
                     {product.materials.map((material, index) => (
                       <li key={index}>• {material}</li>
                     ))}
@@ -353,12 +355,12 @@ Pankaj Furniture - Three Generations of Craftsmanship
 
                 {/* Designer's Note */}
                 <div>
-                  <h3 className="font-semibold flex items-center mb-3">
-                    <Sparkles className="w-5 h-5 mr-2 text-emerald-800" />
+                  <h3 className="text-sm md:text-base font-semibold flex items-center mb-3">
+                    <Sparkles className="w-4 md:w-5 h-4 md:h-5 mr-2 text-emerald-800" />
                     Designer's Note
                   </h3>
-                  <p className="text-gray-700 italic">"{product.designerNote}"</p>
-                  <p className="text-sm text-gray-600 mt-2">— {product.designer}</p>
+                  <p className="text-sm md:text-base text-gray-700 italic">"{product.designerNote}"</p>
+                  <p className="text-xs md:text-sm text-gray-600 mt-2">— {product.designer}</p>
                 </div>
               </div>
             </div>
@@ -371,7 +373,7 @@ Pankaj Furniture - Three Generations of Craftsmanship
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div className="mt-16">
-            <h2 className="text-3xl mb-8" style={{ fontFamily: 'Playfair Display, serif' }}>
+            <h2 className="text-2xl md:text-3xl mb-8" style={{ fontFamily: 'Playfair Display, serif' }}>
               Complete the Look
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
