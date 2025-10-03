@@ -6,6 +6,12 @@ import json
 import logging
 from pathlib import Path
 from database import get_db
+from email_service import (
+    send_quote_notification,
+    send_consultation_notification,
+    send_contact_notification,
+    send_customer_confirmation
+)
 
 ROOT_DIR = Path(__file__).parent
 DATA_DIR = ROOT_DIR / "data"
@@ -124,6 +130,18 @@ def create_quote_request(request: QuoteRequest):
     conn.commit()
     request_id = cursor.lastrowid
     conn.close()
+    
+    # Send email notifications
+    quote_data = {
+        'name': request.name,
+        'email': request.email,
+        'phone': request.phone,
+        'product_ids': request.product_ids,
+        'message': request.message
+    }
+    send_quote_notification(quote_data)
+    send_customer_confirmation(request.email, request.name, 'quote request')
+    
     return {"id": request_id, "message": "Quote request submitted successfully"}
 
 # Consultation Request
@@ -138,6 +156,19 @@ def create_consultation_request(request: ConsultationRequest):
     conn.commit()
     request_id = cursor.lastrowid
     conn.close()
+    
+    # Send email notifications
+    consultation_data = {
+        'name': request.name,
+        'email': request.email,
+        'phone': request.phone,
+        'project_type': request.project_type,
+        'budget': request.budget,
+        'message': request.message
+    }
+    send_consultation_notification(consultation_data)
+    send_customer_confirmation(request.email, request.name, 'consultation request')
+    
     return {"id": request_id, "message": "Consultation request submitted successfully"}
 
 # Contact Message
@@ -152,6 +183,17 @@ def create_contact_message(message: ContactMessage):
     conn.commit()
     message_id = cursor.lastrowid
     conn.close()
+    
+    # Send email notifications
+    contact_data = {
+        'name': message.name,
+        'email': message.email,
+        'subject': message.subject,
+        'message': message.message
+    }
+    send_contact_notification(contact_data)
+    send_customer_confirmation(message.email, message.name, 'message')
+    
     return {"id": message_id, "message": "Message sent successfully"}
 
 # Wishlist
