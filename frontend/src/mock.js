@@ -182,6 +182,157 @@ export const products = [
     },
     inStock: true,
     featured: false
+  },
+  {
+    id: 'p7',
+    name: 'Executive Office Desk',
+    collection: 'contemporary',
+    category: 'table',
+    room: 'study',
+    style: 'modern',
+    price: 78000,
+    description: 'A sophisticated workspace solution combining functionality with elegant design. Features built-in cable management, spacious drawers, and a premium leather writing surface.',
+    materials: ['Solid Oak', 'Leather Top', 'Metal Hardware'],
+    dimensions: { width: 160, depth: 80, height: 75 },
+    designer: 'Amit Desai',
+    designerNote: 'Designed for the modern professional who values both style and productivity.',
+    images: [
+      'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=1200&h=800&fit=crop',
+      'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=1200&h=800&fit=crop',
+      'https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=1200&h=800&fit=crop'
+    ],
+    customizations: {
+      wood: ['Oak', 'Walnut', 'Mahogany'],
+      finish: ['Natural', 'Dark Stain', 'White Wash']
+    },
+    inStock: true,
+    featured: true
+  },
+  {
+    id: 'p8',
+    name: 'Comfort Recliner',
+    collection: 'contemporary',
+    category: 'chair',
+    room: 'living',
+    style: 'modern',
+    price: 68000,
+    description: 'Ultimate relaxation meets contemporary design. This recliner features premium cushioning, adjustable positions, and a sleek silhouette that complements any living space.',
+    materials: ['Genuine Leather', 'Steel Frame', 'Memory Foam'],
+    dimensions: { width: 85, depth: 95, height: 105 },
+    designer: 'Neha Kapoor',
+    designerNote: 'Comfort should never compromise style. This recliner proves both are possible.',
+    images: [
+      'https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200&h=800&fit=crop',
+      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&h=800&fit=crop',
+      'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=1200&h=800&fit=crop'
+    ],
+    customizations: {
+      fabric: ['Black Leather', 'Brown Leather', 'Grey Fabric'],
+      features: ['Manual Recline', 'Power Recline', 'Massage Function']
+    },
+    inStock: true,
+    featured: false
+  },
+  {
+    id: 'p9',
+    name: 'Vintage Sideboard',
+    collection: 'heritage',
+    category: 'storage',
+    room: 'dining',
+    style: 'traditional',
+    price: 115000,
+    description: 'A stunning storage solution with hand-carved doors and brass fittings. Perfect for displaying fine china or storing dining essentials with timeless elegance.',
+    materials: ['Solid Rosewood', 'Brass Handles', 'Velvet Lining'],
+    dimensions: { width: 180, depth: 50, height: 90 },
+    designer: 'Anita Sharma',
+    designerNote: 'Every meal becomes special when surrounded by pieces that honor our heritage.',
+    images: [
+      'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=1200&h=800&fit=crop',
+      'https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=1200&h=800&fit=crop',
+      'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1200&h=800&fit=crop'
+    ],
+    customizations: {
+      wood: ['Rosewood', 'Teak', 'Mahogany'],
+      hardware: ['Brass', 'Antique Bronze', 'Silver']
+    },
+    inStock: true,
+    featured: false
+  },
+  {
+    id: 'p10',
+    name: 'Modern Console Table',
+    collection: 'contemporary',
+    category: 'table',
+    room: 'living',
+    style: 'minimalist',
+    price: 42000,
+    description: 'Sleek and functional, this console table features a slim profile perfect for entryways or behind sofas. The geometric metal base adds an artistic touch.',
+    materials: ['Marble Top', 'Steel Base', 'Powder Coating'],
+    dimensions: { width: 120, depth: 35, height: 80 },
+    designer: 'Vikram Patel',
+    designerNote: 'Sometimes the smallest pieces make the biggest impact.',
+    images: [
+      'https://images.unsplash.com/photo-1551298370-9d3d53740c72?w=1200&h=800&fit=crop',
+      'https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=1200&h=800&fit=crop',
+      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&h=800&fit=crop'
+    ],
+    customizations: {
+      top: ['White Marble', 'Black Marble', 'Wood'],
+      base: ['Matte Black', 'Gold', 'Chrome']
+    },
+    inStock: true,
+    featured: true
+  },
+  {
+    id: 'p11',
+    name: 'Garden Lounge Set',
+    collection: 'outdoor',
+    category: 'sofa',
+    room: 'outdoor',
+    style: 'modern',
+    price: 145000,
+    description: 'Weather-resistant luxury for your outdoor space. This 4-piece set includes a sofa, two chairs, and a coffee table, all crafted from premium teak with UV-resistant cushions.',
+    materials: ['Teak Wood', 'Outdoor Fabric', 'Stainless Steel'],
+    dimensions: { width: 200, depth: 85, height: 75 },
+    designer: 'Priya Menon',
+    designerNote: 'Bring the comfort of indoor living to your outdoor oasis.',
+    images: [
+      'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&h=800&fit=crop',
+      'https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?w=1200&h=800&fit=crop',
+      'https://images.unsplash.com/photo-1600210491369-e753d80a41f3?w=1200&h=800&fit=crop'
+    ],
+    customizations: {
+      cushion: ['Beige', 'Navy', 'Grey', 'Terracotta'],
+      configuration: ['4-Piece', '6-Piece', '8-Piece']
+    },
+    inStock: true,
+    featured: true
+  },
+  {
+    id: 'p12',
+    name: 'Artisan Wardrobe',
+    collection: 'artisan',
+    category: 'storage',
+    room: 'bedroom',
+    style: 'traditional',
+    price: 195000,
+    description: 'A magnificent wardrobe featuring intricate hand-carved panels and spacious interior with multiple compartments. Includes soft-close hinges and premium velvet lining.',
+    materials: ['Solid Walnut', 'Mirror Glass', 'Velvet Interior'],
+    dimensions: { width: 220, depth: 60, height: 240 },
+    designer: 'Suresh Verma',
+    designerNote: 'Your clothes deserve a home as beautiful as they are.',
+    images: [
+      'https://images.unsplash.com/photo-1594620302200-9a762244a156?w=1200&h=800&fit=crop',
+      'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=1200&h=800&fit=crop',
+      'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=1200&h=800&fit=crop'
+    ],
+    customizations: {
+      wood: ['Walnut', 'Rosewood', 'Teak'],
+      doors: ['2-Door', '3-Door', '4-Door'],
+      mirror: ['With Mirror', 'Without Mirror']
+    },
+    inStock: true,
+    featured: false
   }
 ];
 
