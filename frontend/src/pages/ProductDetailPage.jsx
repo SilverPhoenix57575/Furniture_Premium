@@ -198,7 +198,7 @@ Pankaj Furniture - Three Generations of Craftsmanship
               <img
                 src={product.images[currentImageIndex]}
                 alt={product.name}
-                className="w-full h-[600px] object-cover"
+                className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover"
               />
               {product.images.length > 1 && (
                 <>
@@ -219,7 +219,7 @@ Pankaj Furniture - Three Generations of Craftsmanship
             </div>
             
             {/* Thumbnail Gallery */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-2 md:gap-4">
               {product.images.map((image, index) => (
                 <button
                   key={index}
@@ -228,7 +228,7 @@ Pankaj Furniture - Three Generations of Craftsmanship
                     currentImageIndex === index ? 'border-emerald-900' : 'border-transparent'
                   }`}
                 >
-                  <img src={image} alt={`View ${index + 1}`} className="w-full h-32 object-cover" />
+                  <img src={image} alt={`View ${index + 1}`} className="w-full h-20 md:h-32 object-cover" />
                 </button>
               ))}
             </div>
