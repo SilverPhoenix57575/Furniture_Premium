@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Trash2, Heart } from 'lucide-react';
-import { products } from '../mock';
+import { getWishlist, removeFromWishlist as removeFromWishlistAPI, getProducts } from '../services/api';
 import { toast } from 'sonner';
 
 const WishlistPage = () => {
   const [wishlist, setWishlist] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadWishlist();
@@ -18,20 +19,33 @@ const WishlistPage = () => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  const loadWishlist = () => {
-    const savedWishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    const wishlistProducts = products.filter(p => savedWishlist.includes(p.id));
-    setWishlist(wishlistProducts);
+  const loadWishlist = async () => {
+    try {
+      const wishlistIds = await getWishlist();
+      const allProducts = await getProducts();
+      const wishlistProducts = allProducts.filter(p => wishlistIds.includes(p.id));
+      setWishlist(wishlistProducts);
+    } catch (error) {
+      console.error('Error loading wishlist:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const removeFromWishlist = (productId) => {
-    const savedWishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    const updatedWishlist = savedWishlist.filter(id => id !== productId);
-    localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
-    window.dispatchEvent(new Event('storage'));
-    loadWishlist();
-    toast.success('Removed from wishlist');
+  const handleRemoveFromWishlist = async (productId) => {
+    try {
+      await removeFromWishlistAPI(productId);
+      window.dispatchEvent(new Event('storage'));
+      loadWishlist();
+      toast.success('Removed from wishlist');
+    } catch (error) {
+      toast.error('Failed to remove from wishlist');
+    }
   };
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center"><p className="text-xl">Loading...</p></div>;
+  }
 
   return (
     <div className="min-h-screen pt-24 pb-16">
@@ -77,7 +91,7 @@ const WishlistPage = () => {
                 </Link>
                 
                 <button
-                  onClick={() => removeFromWishlist(product.id)}
+                  onClick={() => handleRemoveFromWishlist(product.id)}
                   className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2 rounded-full hover:bg-red-50 transition-colors group"
                 >
                   <Trash2 className="w-5 h-5 text-gray-700 group-hover:text-red-600 transition-colors" />

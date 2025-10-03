@@ -1,8 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
-import { storeLocation } from '../mock';
+import { getStoreLocation } from '../services/api';
 
 const StoreLocatorPage = () => {
+  const [storeLocation, setStoreLocation] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStoreLocation = async () => {
+      try {
+        const data = await getStoreLocation();
+        setStoreLocation(data);
+      } catch (error) {
+        console.error('Error fetching store location:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStoreLocation();
+  }, []);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center"><p className="text-xl">Loading...</p></div>;
+  }
+
+  if (!storeLocation) {
+    return <div className="min-h-screen flex items-center justify-center"><p className="text-xl">Store information not available</p></div>;
+  }
   const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3742.4076!2d85.8245!3d20.2961!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDE3JzQ2LjAiTiA4NcKwNDknMjguMiJF!5e0!3m2!1sen!2sin!4v1234567890`;
 
   return (
