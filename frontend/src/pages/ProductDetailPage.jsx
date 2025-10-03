@@ -62,6 +62,55 @@ const ProductDetailPage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
   };
 
+  const downloadTearsheet = () => {
+    const tearsheetContent = `
+PANKAJ FURNITURE - PRODUCT TEARSHEET
+${'='.repeat(50)}
+
+Product: ${product.name}
+Collection: ${product.collection.toUpperCase()}
+Price: ₹${product.price.toLocaleString('en-IN')}
+
+DESCRIPTION:
+${product.description}
+
+DIMENSIONS:
+Width: ${product.dimensions.width} cm
+Depth: ${product.dimensions.depth} cm
+Height: ${product.dimensions.height} cm
+
+MATERIALS:
+${product.materials.map(m => `• ${m}`).join('\n')}
+
+DESIGNER: ${product.designer}
+DESIGNER'S NOTE: "${product.designerNote}"
+
+CUSTOMIZATION OPTIONS:
+${Object.entries(product.customizations || {}).map(([key, values]) => 
+  `${key.toUpperCase()}: ${values.join(', ')}`
+).join('\n')}
+
+CONTACT:
+Email: debipanda27@gmail.com
+Phone: +91 98765 43210
+Address: Plot No-97, 7th St, Bapuji Nagar, Bhubaneswar, Odisha 751009
+
+${'='.repeat(50)}
+Pankaj Furniture - Three Generations of Craftsmanship
+    `;
+
+    const blob = new Blob([tearsheetContent], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${product.name.replace(/\s+/g, '_')}_Tearsheet.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    toast.success('Tearsheet downloaded!');
+  };
+
   return (
     <div className="min-h-screen pt-24 pb-16">
       <div className="container">
@@ -185,7 +234,10 @@ const ProductDetailPage = () => {
               </div>
 
               <div className="flex gap-4">
-                <button className="flex-1 text-sm text-gray-700 hover:text-emerald-800 transition-colors py-2">
+                <button 
+                  onClick={downloadTearsheet}
+                  className="flex-1 text-sm text-gray-700 hover:text-emerald-800 transition-colors py-2"
+                >
                   <Download className="inline w-4 h-4 mr-2" />
                   Download Tearsheet
                 </button>
