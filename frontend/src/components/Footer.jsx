@@ -12,7 +12,7 @@ const Footer = () => {
           {/* Brand Section - Larger */}
           <div className="lg:col-span-4">
             <h3 className="text-3xl font-bold text-white mb-4 mt-8" style={{ fontFamily: 'Playfair Display, serif' }}>
-              Pankaj Furniture
+              Labanya Furnitures
             </h3>
             <p className="text-stone-400 mb-6 leading-relaxed text-base">
               Three generations of craftsmanship. Creating timeless furniture that tells your story since 1965.
@@ -120,12 +120,12 @@ const Footer = () => {
                 <div className="flex items-start space-x-3 group">
                   <MapPin className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                   <a 
-                    href="https://share.google/Z3QVHf4usv7LI18vF" 
+                    href="https://maps.app.goo.gl/e3RVkrN8ES5nVhSG9" 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-stone-400 text-sm hover:text-emerald-400 transition-colors"
                   >
-                    Plot No-97, 7th St, Bapuji Nagar,<br />Bhubaneswar, Odisha 751009
+                    Plot No-368, Infocity Ave, Sishu Vihar,<br />Patia, Bhubaneswar, Odisha 751024
                   </a>
                 </div>
               </li>
@@ -174,7 +174,7 @@ const Footer = () => {
         <div className="container mx-auto px-6 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-stone-500 text-sm">
-              &copy; {new Date().getFullYear()} Pankaj Furniture. All rights reserved.
+              &copy; {new Date().getFullYear()} Labanya Furnitures. All rights reserved.
             </p>
             <p className="text-stone-500 text-sm">
               Crafted with passion in Bhubaneswar, Odisha

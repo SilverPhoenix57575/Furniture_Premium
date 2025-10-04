@@ -1,4 +1,4 @@
-// Mock data for Pankaj Furniture
+// Mock data for Labanya Furnitures
 
 export const collections = [
   {
@@ -405,14 +405,14 @@ export const testimonials = [
     id: 't1',
     name: 'Arjun Mehta',
     role: 'Interior Designer',
-    content: 'Pankaj Furniture has been my go-to for heritage pieces. The craftsmanship is unparalleled, and my clients are always thrilled.',
+    content: 'Labanya Furnitures has been my go-to for heritage pieces. The craftsmanship is unparalleled, and my clients are always thrilled.',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop'
   },
   {
     id: 't2',
     name: 'Sneha Patel',
     role: 'Homeowner',
-    content: 'We furnished our entire home with pieces from Pankaj Furniture. Each item is a work of art that tells a story.',
+    content: 'We furnished our entire home with pieces from Labanya Furnitures. Each item is a work of art that tells a story.',
     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop'
   },
   {
@@ -425,27 +425,27 @@ export const testimonials = [
 ];
 
 export const storeLocation = {
-  address: 'Plot No-97, 7th St, Bapuji Nagar, Bhubaneswar, Odisha 751009',
-  phone: '+91 98765 43210',
+  address: 'Plot No-368, Infocity Ave, Sishu Vihar, Patia, Bhubaneswar, Odisha 751024',
+  phone: '+91 93373 95904',
   email: 'debipanda27@gmail.com',
   hours: {
-    weekday: '10:00 AM - 8:00 PM',
-    weekend: '10:00 AM - 9:00 PM'
+    weekday: '9:00 AM - 9:00 PM',
+    weekend: '9:00 AM - 9:00 PM'
   },
   coordinates: {
-    lat: 20.2961,
-    lng: 85.8245
+    lat: 20.342940,
+    lng: 85.8211837
   }
 };
 
 export const brandStory = {
   title: 'Three Generations of Craftsmanship',
   subtitle: 'Where Heritage Meets Modern Living',
-  story: `Founded in 1965 by Master Craftsman Pankaj Das, Pankaj Furniture began as a small workshop in Bhubaneswar, dedicated to preserving traditional Indian woodworking techniques. What started with a single artisan and a dream has grown into a celebrated furniture house, now spanning three generations of master craftspeople.
+  story: `Founded in 1965 by Master Craftsman Labanya Das, Labanya Furnitures began as a small workshop in Bhubaneswar, dedicated to preserving traditional Indian woodworking techniques. What started with a single artisan and a dream has grown into a celebrated furniture house, now spanning three generations of master craftspeople.
 
 Our philosophy is simple: create furniture that tells a story, honors our heritage, and serves modern life. Each piece that leaves our workshop carries the soul of the artisan who crafted it, the history of techniques passed down through centuries, and the promise of quality that lasts for generations.
 
 Today, under the leadership of third-generation craftsman Rahul Das, we blend time-honored joinery techniques with contemporary design sensibilities. Our workshop employs over 50 skilled artisans, each specializing in specific crafts—from intricate hand-carving to precision joinery. We source our wood exclusively from sustainably managed forests, ensuring that our craft honors not just tradition, but also our responsibility to the environment.
 
-Every curve, every joint, every finish is executed with the same attention to detail that our founder demanded. Because at Pankaj Furniture, we don't just make furniture—we create heirlooms.`
+Every curve, every joint, every finish is executed with the same attention to detail that our founder demanded. Because at Labanya Furnitures, we don't just make furniture—we create heirlooms.`
 };

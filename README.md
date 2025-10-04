@@ -1,4 +1,4 @@
-# Pankaj Furniture Website
+# Labanya Furnitures Website
 
 A modern, full-stack furniture e-commerce website built with React 19 and FastAPI.
 
@@ -310,5 +310,5 @@ Proprietary and confidential.
 ## Contact
 
 **Developer:** <debipanda27@gmail.com>  
-**Project:** Pankaj Furniture Website  
+**Project:** Labanya Furnitures Website  
 **Status:** Active Development

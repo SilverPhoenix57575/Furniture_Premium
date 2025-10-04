@@ -209,7 +209,7 @@ const HomePage = () => {
                 Three Generations of Excellence
               </h2>
               <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-                Since 1965, Pankaj Furniture has been synonymous with exceptional craftsmanship and timeless design. 
+                Since 1965, Labanya Furnitures has been synonymous with exceptional craftsmanship and timeless design. 
                 What began in a small workshop in Bhubaneswar has grown into a celebrated furniture house, 
                 preserving traditional Indian woodworking techniques while embracing contemporary aesthetics.
               </p>

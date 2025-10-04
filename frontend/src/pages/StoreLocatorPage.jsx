@@ -27,7 +27,7 @@ const StoreLocatorPage = () => {
   if (!storeLocation) {
     return <div className="min-h-screen flex items-center justify-center"><p className="text-xl">Store information not available</p></div>;
   }
-  const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3742.4076!2d85.8245!3d20.2961!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDE3JzQ2LjAiTiA4NcKwNDknMjguMiJF!5e0!3m2!1sen!2sin!4v1234567890`;
+  const mapUrl = `https://www.google.com/maps?q=20.34294,85.8211837&hl=en&z=17&output=embed`;
 
   return (
     <div className="min-h-screen pt-24 pb-16">
@@ -38,8 +38,8 @@ const StoreLocatorPage = () => {
             Visit Our Showroom
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Experience the beauty and craftsmanship of our furniture in person. 
-            Our team is ready to help you find the perfect pieces for your space.
+            Visit us at Infocity, Patia to experience premium furniture collections. 
+            Same-day delivery available across Bhubaneswar.
           </p>
         </div>
 
@@ -55,13 +55,13 @@ const StoreLocatorPage = () => {
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Pankaj Furniture Location"
+                title="Labanya Furnitures Location"
               ></iframe>
             </div>
             
             {/* Directions Button */}
             <a
-              href="https://share.google/Z3QVHf4usv7LI18vF"
+              href="https://maps.app.goo.gl/e3RVkrN8ES5nVhSG9"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary w-full text-center block"
@@ -74,7 +74,7 @@ const StoreLocatorPage = () => {
           <div className="order-1 lg:order-2">
             <div className="bg-white border border-gray-200 rounded-lg p-8">
               <h2 className="text-3xl mb-8" style={{ fontFamily: 'Playfair Display, serif' }}>
-                Bhubaneswar Showroom
+                Labanya Furnitures Showroom
               </h2>
 
               <div className="space-y-8">
@@ -129,8 +129,8 @@ const StoreLocatorPage = () => {
                   <div>
                     <h3 className="font-semibold text-lg mb-2">Opening Hours</h3>
                     <div className="text-gray-700 space-y-1">
-                      <p><span className="font-medium">Monday - Friday:</span> {storeLocation.hours.weekday}</p>
-                      <p><span className="font-medium">Saturday - Sunday:</span> {storeLocation.hours.weekend}</p>
+                      <p><span className="font-medium">Monday - Sunday:</span> {storeLocation.hours.weekday}</p>
+                      <p className="text-sm text-gray-500 mt-2">Same-day delivery available</p>
                     </div>
                   </div>
                 </div>
@@ -138,27 +138,27 @@ const StoreLocatorPage = () => {
 
               {/* What to Expect */}
               <div className="mt-12 pt-8 border-t border-gray-200">
-                <h3 className="text-xl font-semibold mb-4">What to Expect</h3>
+                <h3 className="text-xl font-semibold mb-4">Why Visit Us</h3>
                 <ul className="space-y-3 text-gray-700">
                   <li className="flex items-start">
                     <span className="text-emerald-800 mr-2">•</span>
-                    <span>Explore our complete furniture collections in a beautifully designed space</span>
+                    <span>Premium furniture collections at Infocity, Patia</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-emerald-800 mr-2">•</span>
-                    <span>Expert consultants to help you find the perfect pieces</span>
+                    <span>Same-day delivery service across Bhubaneswar</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-emerald-800 mr-2">•</span>
-                    <span>See and touch the quality of materials and craftsmanship</span>
+                    <span>Expert guidance for your home furnishing needs</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-emerald-800 mr-2">•</span>
-                    <span>Complimentary design consultation available</span>
+                    <span>Quality craftsmanship and materials</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-emerald-800 mr-2">•</span>
-                    <span>Coffee and refreshments while you browse</span>
+                    <span>Open 7 days a week, 9 AM - 9 PM</span>
                   </li>
                 </ul>
               </div>
@@ -172,8 +172,8 @@ const StoreLocatorPage = () => {
             Plan Your Visit
           </h2>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Want to ensure we have specific pieces in stock or need dedicated time with our design team? 
-            Schedule an appointment for a personalized experience.
+            Located at Infocity, Patia. Open daily from 9 AM to 9 PM. 
+            Contact us to check availability or schedule a visit.
           </p>
           <a href={`mailto:${storeLocation.email}?subject=Showroom Visit Appointment`} className="btn-primary">
             Schedule an Appointment

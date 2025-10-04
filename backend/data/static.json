@@ -37,14 +37,14 @@
       "id": "t1",
       "name": "Arjun Mehta",
       "role": "Interior Designer",
-      "content": "Pankaj Furniture has been my go-to for heritage pieces. The craftsmanship is unparalleled, and my clients are always thrilled.",
+      "content": "Labanya Furnitures has been my go-to for heritage pieces. The craftsmanship is unparalleled, and my clients are always thrilled.",
       "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop"
     },
     {
       "id": "t2",
       "name": "Sneha Patel",
       "role": "Homeowner",
-      "content": "We furnished our entire home with pieces from Pankaj Furniture. Each item is a work of art that tells a story.",
+      "content": "We furnished our entire home with pieces from Labanya Furnitures. Each item is a work of art that tells a story.",
       "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop"
     },
     {
@@ -56,16 +56,16 @@
     }
   ],
   "storeLocation": {
-    "address": "Plot No-97, 7th St, Bapuji Nagar, Bhubaneswar, Odisha 751009",
-    "phone": "+91 98765 43210",
+    "address": "Plot No-368, Infocity Ave, Sishu Vihar, Patia, Bhubaneswar, Odisha 751024",
+    "phone": "+91 93373 95904",
     "email": "debipanda27@gmail.com",
     "hours": {
-      "weekday": "10:00 AM - 8:00 PM",
-      "weekend": "10:00 AM - 9:00 PM"
+      "weekday": "9:00 AM - 9:00 PM",
+      "weekend": "9:00 AM - 9:00 PM"
     },
     "coordinates": {
-      "lat": 20.2961,
-      "lng": 85.8245
+      "lat": 20.342940,
+      "lng": 85.8211837
     }
   }
 }

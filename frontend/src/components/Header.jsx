@@ -26,7 +26,7 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="text-2xl font-bold text-emerald-900" style={{ fontFamily: 'Playfair Display, serif' }}>
-              Pankaj Furniture
+              Labanya Furnitures
             </div>
           </Link>
 
