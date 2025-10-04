@@ -15,8 +15,6 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const wishlistCount = JSON.parse(localStorage.getItem('wishlist') || '[]').length;
-
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -88,11 +86,6 @@ const Header = () => {
 
             <Link to="/wishlist" className="relative group">
               <Heart className="w-5 h-5 text-gray-700 group-hover:text-emerald-800 transition-colors" />
-              {wishlistCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-emerald-900 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {wishlistCount}
-                </span>
-              )}
             </Link>
 
             {/* Mobile Menu Toggle */}
