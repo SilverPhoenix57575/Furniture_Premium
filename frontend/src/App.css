@@ -99,14 +99,18 @@ a {
 
 .image-hover {
   overflow: hidden;
+  position: relative;
 }
 
 .image-hover img {
-  transition: transform 0.6s ease;
+  transition: transform 0.3s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .image-hover:hover img {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 /* Smooth scrolling */
@@ -160,6 +164,28 @@ button:focus, a:focus {
   from {
     opacity: 0;
     transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
   to {
     opacity: 1;

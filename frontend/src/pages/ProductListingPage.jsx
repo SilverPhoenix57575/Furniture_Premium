@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Heart, SlidersHorizontal } from 'lucide-react';
-import { getProducts, getCollections, addToWishlist } from '../services/api';
+import { getProducts, getCollections, addToWishlist, getWishlist, removeFromWishlist } from '../services/api';
 import { toast } from 'sonner';
 
 const ProductListingPage = () => {
@@ -14,6 +14,7 @@ const ProductListingPage = () => {
   });
   const [products, setProducts] = useState([]);
   const [collections, setCollections] = useState([]);
+  const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('grid');
   const [showFilters, setShowFilters] = useState(false);
@@ -21,12 +22,14 @@ const ProductListingPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productsData, collectionsData] = await Promise.all([
+        const [productsData, collectionsData, wishlistData] = await Promise.all([
           getProducts(),
-          getCollections()
+          getCollections(),
+          getWishlist()
         ]);
         setProducts(productsData);
         setCollections(collectionsData);
+        setWishlistItems(wishlistData);
       } catch (error) {
         console.error('Error fetching data:', error);
         toast.error('Failed to load products');
@@ -35,6 +38,18 @@ const ProductListingPage = () => {
       }
     };
     fetchData();
+    
+    const handleStorageChange = async () => {
+      try {
+        const wishlistData = await getWishlist();
+        setWishlistItems(wishlistData);
+      } catch (error) {
+        console.error('Error updating wishlist:', error);
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   const filteredProducts = useMemo(() => {
@@ -52,20 +67,36 @@ const ProductListingPage = () => {
       
       return true;
     });
-  }, [filters]);
+  }, [products, filters]);
 
   const handleAddToWishlist = async (productId, e) => {
     e.preventDefault();
+    const isInWishlist = wishlistItems.includes(productId);
+    
+    // Update UI immediately
+    if (isInWishlist) {
+      setWishlistItems(prev => prev.filter(id => id !== productId));
+    } else {
+      setWishlistItems(prev => [...prev, productId]);
+    }
+    
     try {
-      await addToWishlist(productId);
-      toast.success('Added to wishlist');
+      if (isInWishlist) {
+        await removeFromWishlist(productId);
+        toast.success('Removed from wishlist', { duration: 1500 });
+      } else {
+        await addToWishlist(productId);
+        toast.success('Added to wishlist', { duration: 1500 });
+      }
       window.dispatchEvent(new Event('storage'));
     } catch (error) {
-      if (error.response?.status === 400) {
-        toast.info('Already in wishlist');
+      // Revert UI on error
+      if (isInWishlist) {
+        setWishlistItems(prev => [...prev, productId]);
       } else {
-        toast.error('Failed to add to wishlist');
+        setWishlistItems(prev => prev.filter(id => id !== productId));
       }
+      toast.error('Failed to update wishlist');
     }
   };
 
@@ -274,35 +305,37 @@ const ProductListingPage = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredProducts.map((product) => (
-                  <Link
-                    key={product.id}
-                    to={`/product/${product.id}`}
-                    className="group card-hover relative"
-                  >
-                    <div className="relative overflow-hidden rounded-lg mb-4 image-hover">
-                      <img
-                        src={product.images[0]}
-                        alt={product.name}
-                        className="w-full h-80 object-cover"
-                      />
-                      <button
-                        onClick={(e) => handleAddToWishlist(product.id, e)}
-                        className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-colors"
-                      >
-                        <Heart className="w-5 h-5 text-gray-700" />
-                      </button>
-                      {!product.inStock && (
-                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                          <span className="text-white font-semibold">Out of Stock</span>
-                        </div>
-                      )}
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2 group-hover:text-emerald-800 transition-colors">
-                      {product.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm mb-2">{product.collection.toUpperCase()}</p>
-                    <p className="text-emerald-900 font-semibold text-lg">₹{product.price.toLocaleString('en-IN')}</p>
-                  </Link>
+                  <div key={product.id} className="relative">
+                    <Link to={`/product/${product.id}`} className="block">
+                      <div className="relative overflow-hidden rounded-lg mb-4 image-hover group card-hover">
+                        <img
+                          src={product.images[0]}
+                          alt={product.name}
+                          className="w-full h-80 object-cover"
+                        />
+                        <button
+                          onClick={(e) => handleAddToWishlist(product.id, e)}
+                          className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-colors"
+                        >
+                          <Heart className={`w-5 h-5 transition-colors ${
+                            wishlistItems.includes(product.id) 
+                              ? 'text-emerald-600 fill-emerald-600' 
+                              : 'text-gray-700'
+                          }`} />
+                        </button>
+                        {!product.inStock && (
+                          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                            <span className="text-white font-semibold">Out of Stock</span>
+                          </div>
+                        )}
+                      </div>
+                      <h3 className="text-xl font-semibold mb-2 hover:text-emerald-800 transition-colors">
+                        {product.name}
+                      </h3>
+                      <p className="text-gray-600 text-sm mb-2">{product.collection.toUpperCase()}</p>
+                      <p className="text-emerald-900 font-semibold text-lg">₹{product.price.toLocaleString('en-IN')}</p>
+                    </Link>
+                  </div>
                 ))}
               </div>
             )}
