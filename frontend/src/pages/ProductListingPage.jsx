@@ -1,13 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
-<<<<<<< HEAD
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { Heart, SlidersHorizontal, GitCompare } from 'lucide-react';
-import { getProducts, getCollections, addToWishlist } from '../services/api';
-=======
-import { Link, useSearchParams } from 'react-router-dom';
-import { Heart, SlidersHorizontal } from 'lucide-react';
 import { getProducts, getCollections, addToWishlist, getWishlist, removeFromWishlist } from '../services/api';
->>>>>>> 72a24c2239a0c9555db0d52c45b36b344c82b815
 import { toast } from 'sonner';
 
 const ProductListingPage = () => {
@@ -324,56 +318,9 @@ const ProductListingPage = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredProducts.map((product) => (
-<<<<<<< HEAD
                   <div key={product.id} className="group card-hover relative">
                     <Link to={`/product/${product.id}`}>
                       <div className="relative overflow-hidden rounded-lg mb-4 image-hover">
-                      <img
-                        src={product.images[0]}
-                        alt={product.name}
-                        className="w-full h-80 object-cover"
-                      />
-                      <button
-                        onClick={(e) => handleAddToWishlist(product.id, e)}
-                        className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-colors"
-                      >
-                        <Heart className="w-5 h-5 text-gray-700" />
-                      </button>
-                      {!product.inStock && (
-                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                          <span className="text-white font-semibold">Out of Stock</span>
-                        </div>
-                      )}
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2 group-hover:text-emerald-800 transition-colors">
-                      {product.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm mb-2">{product.collection.toUpperCase()}</p>
-                    <p className="text-emerald-900 font-semibold text-lg">₹{product.price.toLocaleString('en-IN')}</p>
-                    </Link>
-                    <label className="flex items-center gap-2 mt-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={compareList.includes(product.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            if (compareList.length >= 3) {
-                              toast.info('You can compare up to 3 products');
-                              return;
-                            }
-                            setCompareList([...compareList, product.id]);
-                          } else {
-                            setCompareList(compareList.filter(id => id !== product.id));
-                          }
-                        }}
-                        className="w-4 h-4"
-                      />
-                      <span className="text-sm text-gray-600">Add to compare</span>
-                    </label>
-=======
-                  <div key={product.id} className="relative">
-                    <Link to={`/product/${product.id}`} className="block">
-                      <div className="relative overflow-hidden rounded-lg mb-4 image-hover group card-hover">
                         <img
                           src={product.images[0]}
                           alt={product.name}
@@ -395,13 +342,31 @@ const ProductListingPage = () => {
                           </div>
                         )}
                       </div>
-                      <h3 className="text-xl font-semibold mb-2 hover:text-emerald-800 transition-colors">
+                      <h3 className="text-xl font-semibold mb-2 group-hover:text-emerald-800 transition-colors">
                         {product.name}
                       </h3>
                       <p className="text-gray-600 text-sm mb-2">{product.collection.toUpperCase()}</p>
                       <p className="text-emerald-900 font-semibold text-lg">₹{product.price.toLocaleString('en-IN')}</p>
                     </Link>
->>>>>>> 72a24c2239a0c9555db0d52c45b36b344c82b815
+                    <label className="flex items-center gap-2 mt-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={compareList.includes(product.id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            if (compareList.length >= 3) {
+                              toast.info('You can compare up to 3 products');
+                              return;
+                            }
+                            setCompareList([...compareList, product.id]);
+                          } else {
+                            setCompareList(compareList.filter(id => id !== product.id));
+                          }
+                        }}
+                        className="w-4 h-4"
+                      />
+                      <span className="text-sm text-gray-600">Add to compare</span>
+                    </label>
                   </div>
                 ))}
               </div>

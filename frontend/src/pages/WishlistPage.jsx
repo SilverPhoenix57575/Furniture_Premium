@@ -1,35 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Trash2, Heart } from 'lucide-react';
-<<<<<<< HEAD
-import { getWishlist, removeFromWishlist as removeFromWishlistAPI, getProducts } from '../services/api';
-=======
 import { getWishlist, removeFromWishlist, getProducts } from '../services/api';
->>>>>>> 72a24c2239a0c9555db0d52c45b36b344c82b815
 import { toast } from 'sonner';
 
 const WishlistPage = () => {
   const [wishlist, setWishlist] = useState([]);
-<<<<<<< HEAD
-=======
   const [products, setProducts] = useState([]);
->>>>>>> 72a24c2239a0c9555db0d52c45b36b344c82b815
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadData();
   }, []);
 
-<<<<<<< HEAD
-  const loadWishlist = async () => {
-    try {
-      const wishlistIds = await getWishlist();
-      const allProducts = await getProducts();
-      const wishlistProducts = allProducts.filter(p => wishlistIds.includes(p.id));
-      setWishlist(wishlistProducts);
-    } catch (error) {
-      console.error('Error loading wishlist:', error);
-=======
   const loadData = async () => {
     try {
       const [productsData] = await Promise.all([getProducts()]);
@@ -37,23 +20,11 @@ const WishlistPage = () => {
       await loadWishlist(productsData);
     } catch (error) {
       console.error('Error loading data:', error);
->>>>>>> 72a24c2239a0c9555db0d52c45b36b344c82b815
     } finally {
       setLoading(false);
     }
   };
 
-<<<<<<< HEAD
-  const handleRemoveFromWishlist = async (productId) => {
-    try {
-      await removeFromWishlistAPI(productId);
-      window.dispatchEvent(new Event('storage'));
-      loadWishlist();
-      toast.success('Removed from wishlist');
-    } catch (error) {
-      toast.error('Failed to remove from wishlist');
-    }
-=======
   const loadWishlist = async (productsData = products) => {
     try {
       const wishlistIds = await getWishlist();
@@ -70,7 +41,6 @@ const WishlistPage = () => {
     
     await removeFromWishlist(productId);
     toast.success('Removed from wishlist', { duration: 1500 });
->>>>>>> 72a24c2239a0c9555db0d52c45b36b344c82b815
   };
 
   if (loading) {

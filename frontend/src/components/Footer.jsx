@@ -11,11 +11,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
           {/* Brand Section - Larger */}
           <div className="lg:col-span-4">
-<<<<<<< HEAD
             <h3 className="text-3xl font-bold text-white mb-4 mt-8" style={{ fontFamily: 'Playfair Display, serif' }}>
-=======
-            <h3 className="text-3xl font-bold text-white mb-4 mt-16" style={{ fontFamily: 'Playfair Display, serif' }}>
->>>>>>> 72a24c2239a0c9555db0d52c45b36b344c82b815
               Pankaj Furniture
             </h3>
             <p className="text-stone-400 mb-6 leading-relaxed text-base">
@@ -59,11 +55,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="lg:col-span-2">
-<<<<<<< HEAD
             <h4 className="text-white font-semibold mb-6 text-lg mt-8">Explore</h4>
-=======
-            <h4 className="text-white font-semibold mb-6 text-lg mt-16">Explore</h4>
->>>>>>> 72a24c2239a0c9555db0d52c45b36b344c82b815
             <ul className="space-y-3">
               <li>
                 <Link to="/collections" className="text-stone-400 hover:text-emerald-400 transition-colors text-sm inline-block hover:translate-x-1 duration-200">
@@ -95,11 +87,7 @@ const Footer = () => {
 
           {/* Services */}
           <div className="lg:col-span-3">
-<<<<<<< HEAD
             <h4 className="text-white font-semibold mb-6 text-lg mt-8">Services</h4>
-=======
-            <h4 className="text-white font-semibold mb-6 text-lg mt-16">Services</h4>
->>>>>>> 72a24c2239a0c9555db0d52c45b36b344c82b815
             <ul className="space-y-3">
               <li>
                 <Link to="/design-services" className="text-stone-400 hover:text-emerald-400 transition-colors text-sm inline-block hover:translate-x-1 duration-200">
@@ -126,11 +114,7 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div className="lg:col-span-3">
-<<<<<<< HEAD
             <h4 className="text-white font-semibold mb-6 text-lg mt-8">Get In Touch</h4>
-=======
-            <h4 className="text-white font-semibold mb-6 text-lg mt-16">Get In Touch</h4>
->>>>>>> 72a24c2239a0c9555db0d52c45b36b344c82b815
             <ul className="space-y-4">
               <li>
                 <div className="flex items-start space-x-3 group">

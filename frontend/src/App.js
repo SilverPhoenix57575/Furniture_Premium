@@ -14,7 +14,6 @@ function ScrollToTop() {
 // Layout Components
 import Header from './components/Header';
 import Footer from './components/Footer';
-import ScrollToTop from './components/ScrollToTop';
 
 // Pages
 import HomePage from './pages/HomePage';
