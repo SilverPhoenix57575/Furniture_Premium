@@ -1,252 +1,289 @@
 # Pankaj Furniture Website
 
-A modern, full-stack furniture e-commerce website built with React and FastAPI.
+A modern, full-stack furniture e-commerce website built with React 19 and FastAPI.
 
 ## Tech Stack
 
 ### Frontend
-- React 19.0.0
-- React Router DOM
-- Tailwind CSS
-- Radix UI Components
+- React 19.0.0 with React Router DOM 7.5.1
+- Tailwind CSS 3.4.17 with custom animations
+- Radix UI Components (full suite)
+- React Hook Form + Zod validation
 - Axios for API calls
+- CRACO for custom webpack config
 
 ### Backend
-- FastAPI
-- SQLite (built-in, no installation needed)
-- JSON files for static content
+- FastAPI 0.110.1
+- SQLite (built-in database)
+- Uvicorn ASGI server
+- Pydantic for data validation
 - Python 3.8+
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed:
-- **Node.js** (v16 or higher) - [Download](https://nodejs.org/)
-- **Python** (v3.8 or higher) - [Download](https://www.python.org/)
-- **No database installation needed** - SQLite is built into Python
+- **Node.js** v16+ - [Download](https://nodejs.org/)
+- **Python** v3.8+ - [Download](https://www.python.org/)
+- **SQLite** (included with Python)
 
-## Installation & Setup
+## Quick Start
 
-### 1. Clone the Repository
+### 1. Backend Setup (Terminal 1)
 
 ```bash
-git clone <repository-url>
-cd Furniture-by-emergent
+# Navigate to backend
+cd Furniture_Premium/backend
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Start FastAPI server
+uvicorn server:app --reload
 ```
 
-### 2. Frontend Setup
+✅ Backend runs at: **http://127.0.0.1:8000**  
+📚 API Docs: **http://127.0.0.1:8000/docs**
+
+### 2. Frontend Setup (Terminal 2)
 
 ```bash
-# Navigate to frontend directory
-cd frontend
+# Navigate to frontend
+cd Furniture_Premium/frontend
 
-# Install dependencies (use --legacy-peer-deps flag to resolve dependency conflicts)
+# Install dependencies (FIRST TIME ONLY)
 npm install --legacy-peer-deps
 
-# Install ajv package (required for webpack)
-npm install ajv@^8.0.0 --legacy-peer-deps
-
-# Start the development server
+# Start React app
 npm start
 ```
 
-The frontend will start at **http://localhost:3000**
+✅ Frontend runs at: **http://localhost:3000**
 
-### 3. Backend Setup
+## ⚠️ CRITICAL: Dependency Management
 
+### ✅ SAFE Commands:
 ```bash
-# Navigate to backend directory
-cd backend
-
-# Install dependencies (no virtual environment needed for quick start)
-pip install -r requirements.txt
-
-# Or with virtual environment (recommended):
-python -m venv venv
-venv\Scripts\activate  # Windows
-source venv/bin/activate  # macOS/Linux
-pip install -r requirements.txt
+npm install --legacy-peer-deps    # Install dependencies
+npm start                          # Start dev server
+npm run build                      # Production build
 ```
 
-### 4. Database Setup
-
-**No manual setup needed!** The SQLite database (`furniture.db`) is automatically created when you start the server.
-
-The `.env` file is already configured with:
-```env
-CORS_ORIGINS=http://localhost:3000,http://localhost:3001
-```
-
-### 5. Start the Backend Server
-
+### ❌ NEVER RUN:
 ```bash
-# Make sure you're in the backend directory
-cd backend
-
-# Start the FastAPI server
-uvicorn server:app --reload
+npm audit fix --force    # BREAKS installation!
+npm update               # Causes version conflicts
 ```
 
-The backend API will be available at:
-- **http://127.0.0.1:8000** - API endpoints
-- **http://127.0.0.1:8000/docs** - Interactive API documentation (Swagger UI)
-- **http://127.0.0.1:8000/api/products** - Example: Get all products
+**Why?** The project uses React 19 with packages expecting React 18. The `--legacy-peer-deps` flag handles this safely.
 
-## Running the Application
+## Common Issues
 
-1. **Start Backend** (Terminal 1):
-   ```bash
-   cd Furniture-by-emergent/backend
-   uvicorn server:app --reload
-   ```
-
-2. **Start Frontend** (Terminal 2):
-   ```bash
-   cd Furniture-by-emergent/frontend
-   npm start
-   ```
-
-3. Open your browser and navigate to **http://localhost:3000**
-
-4. Test the API at **http://127.0.0.1:8000/docs**
-
-## Common Issues & Solutions
-
-### Issue: `Cannot find module 'ajv/dist/compile/codegen'`
+### Issue: npm install fails with ERESOLVE errors
 **Solution:**
 ```bash
 cd frontend
-npm install ajv@^8.0.0 --legacy-peer-deps
-```
-
-### Issue: `ERESOLVE unable to resolve dependency tree`
-**Solution:**
-```bash
-cd frontend
-rm -rf node_modules package-lock.json
+del package-lock.json
+rmdir /s /q node_modules
 npm install --legacy-peer-deps
 ```
 
-### Issue: Backend won't start - Module not found
-**Solution:**
+### Issue: Port already in use
+**Windows:**
 ```bash
-cd Furniture-by-emergent/backend
-pip install -r requirements.txt
-uvicorn server:app --reload
-```
-
-### Issue: Port 3000 or 8000 already in use
-**Solution:**
-```bash
-# Kill the process using the port
-# On Windows:
 netstat -ano | findstr :3000
 taskkill /PID <PID> /F
+```
 
-# On macOS/Linux:
+**macOS/Linux:**
+```bash
 lsof -ti:3000 | xargs kill -9
+```
+
+### Issue: Backend module not found
+**Solution:**
+```bash
+cd backend
+pip install --upgrade -r requirements.txt
 ```
 
 ## Project Structure
 
 ```
-Furniture-by-emergent/
-├── frontend/                 # React frontend
-│   ├── public/              # Static files
+Furniture_Premium/
+├── frontend/
+│   ├── public/              # Static assets
 │   ├── src/
-│   │   ├── components/      # React components
-│   │   ├── pages/           # Page components
-│   │   ├── hooks/           # Custom hooks
-│   │   ├── lib/             # Utilities
-│   │   ├── mock.js          # Mock data
-│   │   └── App.js           # Main app component
-│   └── package.json
+│   │   ├── components/      # UI components
+│   │   │   ├── ui/         # Radix UI components
+│   │   │   ├── Header.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   └── ...
+│   │   ├── pages/          # Route pages
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── ProductListingPage.jsx
+│   │   │   ├── ProductDetailPage.jsx
+│   │   │   └── ...
+│   │   ├── hooks/          # Custom React hooks
+│   │   ├── lib/            # Utilities
+│   │   ├── mock.js         # Mock data
+│   │   ├── App.js          # Main app
+│   │   └── index.js        # Entry point
+│   ├── craco.config.js     # Webpack customization
+│   ├── tailwind.config.js  # Tailwind setup
+│   └── package.json        # Dependencies
 │
-├── backend/                 # FastAPI backend
-│   ├── data/               # JSON data files
-│   │   ├── products.json   # Product catalog
-│   │   ├── collections.json # Collections
-│   │   └── static.json     # Rooms, journal, testimonials
-│   ├── server.py           # Main server file
-│   ├── database.py         # SQLite database setup
-│   ├── furniture.db        # SQLite database (auto-created)
-│   ├── requirements.txt    # Python dependencies
-│   └── .env               # Environment variables
+├── backend/
+│   ├── data/               # JSON data
+│   │   ├── products.json
+│   │   ├── collections.json
+│   │   └── static.json
+│   ├── server.py           # FastAPI app
+│   ├── database.py         # SQLite setup
+│   ├── email_service.py    # Email handler
+│   ├── furniture.db        # Database (auto-created)
+│   └── requirements.txt
 │
-└── README.md
+├── tests/                  # Test files
+├── README.md              # This file
+├── QUICK_START.md         # Quick reference
+└── SETUP_GUIDE.md         # Detailed setup
 ```
 
 ## Available Scripts
 
 ### Frontend
-- `npm start` - Start development server
-- `npm build` - Build for production
-- `npm test` - Run tests
+```bash
+npm start          # Dev server (port 3000)
+npm run build      # Production build
+npm test           # Run tests
+```
 
 ### Backend
-- `uvicorn server:app --reload` - Start development server
-- `pytest` - Run tests
+```bash
+uvicorn server:app --reload    # Dev server (port 8000)
+python -m pytest               # Run tests
+```
 
 ## Features
 
-- ✅ Product browsing and filtering
-- ✅ Product detail pages with image galleries
-- ✅ Wishlist functionality (database-backed)
-- ✅ Quote request forms (saved to database)
-- ✅ Design consultation booking (saved to database)
-- ✅ Responsive design
-- ✅ Store locator
-- ✅ Backend API with SQLite database
-- ✅ RESTful API endpoints
-- ⚠️ Frontend-Backend integration (pending)
-- ⚠️ Email notifications (pending)
+### ✅ Implemented
+- Product catalog with filtering (collection, room, style)
+- Product detail pages with image galleries
+- Wishlist functionality (localStorage + database)
+- Quote request forms (database-backed)
+- Design consultation booking
+- Responsive design (mobile-first)
+- Store locator with map
+- RESTful API with FastAPI
+- SQLite database (auto-setup)
+- Interactive API documentation
 
-## Development Notes
+### 🔄 In Progress
+- Frontend-Backend integration
+- Email notifications (SMTP configured)
+- User authentication
+- Shopping cart
 
-- The frontend currently uses mock data from `src/mock.js`
-- Backend API is fully functional with all endpoints ready
-- Frontend needs to be updated to use API endpoints instead of mock data
-- Email service configuration required for form submissions
+### 📋 Planned
+- Payment gateway integration
+- Order management
+- Admin dashboard
+- Product reviews
 
-## API Endpoints
+## Current Status
+
+- **Frontend:** Uses mock data from `src/mock.js`
+- **Backend:** Fully functional API ready at `/api/*`
+- **Database:** SQLite with auto-migration
+- **Next Step:** Connect frontend to backend API
+
+## API Reference
+
+**Base URL:** `http://127.0.0.1:8000`  
+**Docs:** `http://127.0.0.1:8000/docs` (Swagger UI)
 
 ### Products
-- `GET /api/products` - List all products (supports filters: collection, room, style, featured)
-- `GET /api/products/{id}` - Get single product details
+```
+GET  /api/products              # List all (filters: collection, room, style, featured)
+GET  /api/products/{id}         # Get single product
+```
 
 ### Collections
-- `GET /api/collections` - List all collections
-- `GET /api/collections/{id}` - Get single collection
+```
+GET  /api/collections           # List all
+GET  /api/collections/{id}      # Get single collection
+```
 
 ### Static Content
-- `GET /api/rooms` - List all rooms
-- `GET /api/journal` - List journal posts
-- `GET /api/testimonials` - List testimonials
-- `GET /api/store-location` - Get store information
+```
+GET  /api/rooms                 # Room categories
+GET  /api/journal               # Blog posts
+GET  /api/testimonials          # Customer reviews
+GET  /api/store-location        # Store info
+```
 
-### Forms (POST)
-- `POST /api/quote-request` - Submit quote request
-- `POST /api/consultation-request` - Submit consultation request
-- `POST /api/contact` - Send contact message
+### Forms
+```
+POST /api/quote-request         # Request product quote
+POST /api/consultation-request  # Book design consultation
+POST /api/contact               # Contact form
+```
 
 ### Wishlist
-- `POST /api/wishlist` - Add item to wishlist
-- `GET /api/wishlist/{session_id}` - Get user's wishlist
-- `DELETE /api/wishlist/{session_id}/{product_id}` - Remove from wishlist
+```
+POST   /api/wishlist                        # Add item
+GET    /api/wishlist/{session_id}           # Get user wishlist
+DELETE /api/wishlist/{session_id}/{prod_id} # Remove item
+```
 
-**Interactive API Documentation:** http://127.0.0.1:8000/docs
+**Test the API:** Open http://127.0.0.1:8000/docs and try endpoints interactively
 
-## Contributing
+## Development Workflow
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. **Start both servers** (backend + frontend)
+2. **Make changes** to code (hot reload enabled)
+3. **Test in browser** at http://localhost:3000
+4. **Check API** at http://127.0.0.1:8000/docs
+5. **Commit changes** with clear messages
+
+## Troubleshooting
+
+### Dependencies broken after npm audit?
+```bash
+cd frontend
+del package-lock.json
+rmdir /s /q node_modules
+npm install --legacy-peer-deps
+```
+
+### React app won't start?
+- Check if port 3000 is free
+- Verify node_modules exists
+- Try: `npm install --legacy-peer-deps`
+
+### Backend errors?
+- Check Python version: `python --version`
+- Reinstall: `pip install -r requirements.txt`
+- Verify furniture.db was created
+
+### CORS errors in browser?
+- Backend must run on port 8000
+- Frontend must run on port 3000
+- Check backend console for CORS logs
+
+## Resources
+
+- **API Docs:** http://127.0.0.1:8000/docs
+- **React Docs:** https://react.dev
+- **FastAPI Docs:** https://fastapi.tiangolo.com
+- **Tailwind CSS:** https://tailwindcss.com
+- **Radix UI:** https://www.radix-ui.com
 
 ## License
 
-This project is proprietary and confidential.
+Proprietary and confidential.
 
 ## Contact
 
-For questions or support, contact: debipanda27@gmail.com
+**Developer:** debipanda27@gmail.com  
+**Project:** Pankaj Furniture Website  
+**Status:** Active Development
