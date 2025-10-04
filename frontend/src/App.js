@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from './components/ui/sonner';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 // Layout Components
 import Header from './components/Header';
 import Footer from './components/Footer';
-import ScrollToTop from './components/ScrollToTop';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -39,7 +46,7 @@ function App() {
           </Routes>
         </main>
         <Footer />
-        <Toaster position="top-right" richColors />
+        <Toaster position="top-right" richColors toastOptions={{ style: { maxWidth: '180px', padding: '8px 12px', fontSize: '14px' } }} />
       </BrowserRouter>
     </div>
   );

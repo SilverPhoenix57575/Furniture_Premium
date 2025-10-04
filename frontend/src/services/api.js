@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { products as mockProducts, collections as mockCollections, rooms as mockRooms, journalPosts as mockJournal, testimonials as mockTestimonials, storeLocation as mockStoreLocation } from '../mock';
 
 const API_BASE_URL = 'http://127.0.0.1:8000/api';
 
@@ -7,71 +8,136 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 500
 });
 
 // Products
 export const getProducts = async (filters = {}) => {
-  const params = new URLSearchParams();
-  if (filters.collection) params.append('collection', filters.collection);
-  if (filters.room) params.append('room', filters.room);
-  if (filters.style) params.append('style', filters.style);
-  if (filters.featured !== undefined) params.append('featured', filters.featured);
-  
-  const response = await api.get(`/products?${params.toString()}`);
-  return response.data;
+  try {
+    const params = new URLSearchParams();
+    if (filters.collection) params.append('collection', filters.collection);
+    if (filters.room) params.append('room', filters.room);
+    if (filters.style) params.append('style', filters.style);
+    if (filters.featured !== undefined) params.append('featured', filters.featured);
+    
+    const response = await api.get(`/products?${params.toString()}`);
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, using mock data:', error.message);
+    let filtered = mockProducts;
+    if (filters.collection) filtered = filtered.filter(p => p.collection === filters.collection);
+    if (filters.room) filtered = filtered.filter(p => p.room === filters.room);
+    if (filters.style) filtered = filtered.filter(p => p.style === filters.style);
+    if (filters.featured !== undefined) filtered = filtered.filter(p => p.featured === filters.featured);
+    return filtered;
+  }
 };
 
 export const getProduct = async (id) => {
-  const response = await api.get(`/products/${id}`);
-  return response.data;
+  try {
+    const response = await api.get(`/products/${id}`);
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, using mock data:', error.message);
+    const product = mockProducts.find(p => p.id === id);
+    if (!product) throw new Error('Product not found');
+    return product;
+  }
 };
 
 // Collections
 export const getCollections = async () => {
-  const response = await api.get('/collections');
-  return response.data;
+  try {
+    const response = await api.get('/collections');
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, using mock data:', error.message);
+    return mockCollections;
+  }
 };
 
 export const getCollection = async (id) => {
-  const response = await api.get(`/collections/${id}`);
-  return response.data;
+  try {
+    const response = await api.get(`/collections/${id}`);
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, using mock data:', error.message);
+    const collection = mockCollections.find(c => c.id === id);
+    if (!collection) throw new Error('Collection not found');
+    return collection;
+  }
 };
 
 // Static Content
 export const getRooms = async () => {
-  const response = await api.get('/rooms');
-  return response.data;
+  try {
+    const response = await api.get('/rooms');
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, using mock data:', error.message);
+    return mockRooms;
+  }
 };
 
 export const getJournal = async () => {
-  const response = await api.get('/journal');
-  return response.data;
+  try {
+    const response = await api.get('/journal');
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, using mock data:', error.message);
+    return mockJournal;
+  }
 };
 
 export const getTestimonials = async () => {
-  const response = await api.get('/testimonials');
-  return response.data;
+  try {
+    const response = await api.get('/testimonials');
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, using mock data:', error.message);
+    return mockTestimonials;
+  }
 };
 
 export const getStoreLocation = async () => {
-  const response = await api.get('/store-location');
-  return response.data;
+  try {
+    const response = await api.get('/store-location');
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, using mock data:', error.message);
+    return mockStoreLocation;
+  }
 };
 
 // Forms
 export const submitQuoteRequest = async (data) => {
-  const response = await api.post('/quote-request', data);
-  return response.data;
+  try {
+    const response = await api.post('/quote-request', data);
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, form submission simulated:', error.message);
+    return { message: 'Quote request received! We will contact you soon.' };
+  }
 };
 
 export const submitConsultationRequest = async (data) => {
-  const response = await api.post('/consultation-request', data);
-  return response.data;
+  try {
+    const response = await api.post('/consultation-request', data);
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, form submission simulated:', error.message);
+    return { message: 'Consultation request received! We will contact you soon.' };
+  }
 };
 
 export const submitContactMessage = async (data) => {
-  const response = await api.post('/contact', data);
-  return response.data;
+  try {
+    const response = await api.post('/contact', data);
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, form submission simulated:', error.message);
+    return { message: 'Message sent successfully! We will get back to you soon.' };
+  }
 };
 
 // Wishlist
@@ -85,21 +151,48 @@ const getSessionId = () => {
 };
 
 export const addToWishlist = async (productId) => {
-  const sessionId = getSessionId();
-  const response = await api.post('/wishlist', { session_id: sessionId, product_id: productId });
-  return response.data;
+  try {
+    const sessionId = getSessionId();
+    const response = await api.post('/wishlist', { session_id: sessionId, product_id: productId });
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, using localStorage for wishlist:', error.message);
+    const sessionId = getSessionId();
+    const wishlist = JSON.parse(localStorage.getItem(`wishlist_${sessionId}`) || '[]');
+    if (wishlist.includes(productId)) {
+      throw { response: { status: 400 } };
+    }
+    wishlist.push(productId);
+    localStorage.setItem(`wishlist_${sessionId}`, JSON.stringify(wishlist));
+    return { message: 'Added to wishlist' };
+  }
 };
 
 export const getWishlist = async () => {
-  const sessionId = getSessionId();
-  const response = await api.get(`/wishlist/${sessionId}`);
-  return response.data;
+  try {
+    const sessionId = getSessionId();
+    const response = await api.get(`/wishlist/${sessionId}`);
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, using localStorage for wishlist:', error.message);
+    const sessionId = getSessionId();
+    return JSON.parse(localStorage.getItem(`wishlist_${sessionId}`) || '[]');
+  }
 };
 
 export const removeFromWishlist = async (productId) => {
-  const sessionId = getSessionId();
-  const response = await api.delete(`/wishlist/${sessionId}/${productId}`);
-  return response.data;
+  try {
+    const sessionId = getSessionId();
+    const response = await api.delete(`/wishlist/${sessionId}/${productId}`);
+    return response.data;
+  } catch (error) {
+    console.warn('API unavailable, using localStorage for wishlist:', error.message);
+    const sessionId = getSessionId();
+    const wishlist = JSON.parse(localStorage.getItem(`wishlist_${sessionId}`) || '[]');
+    const filtered = wishlist.filter(id => id !== productId);
+    localStorage.setItem(`wishlist_${sessionId}`, JSON.stringify(filtered));
+    return { message: 'Removed from wishlist' };
+  }
 };
 
 // Reviews

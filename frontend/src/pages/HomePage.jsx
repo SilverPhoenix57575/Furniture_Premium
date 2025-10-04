@@ -53,13 +53,16 @@ const HomePage = () => {
         </div>
         
         <div className="relative z-10 text-center text-white px-6 max-w-4xl">
-          <h1 className="text-5xl md:text-7xl mb-6 fade-in" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Timeless Design,<br />Modern Living
+          <h1 className="text-5xl md:text-7xl mb-6 animate-[slideUp_1s_ease-out]" style={{ fontFamily: 'Playfair Display, serif' }}>
+            <span className="inline-block animate-[slideUp_1s_ease-out_0.1s_both]">Timeless</span>{' '}
+            <span className="inline-block animate-[slideUp_1s_ease-out_0.2s_both]">Design,</span><br />
+            <span className="inline-block animate-[slideUp_1s_ease-out_0.3s_both]">Modern</span>{' '}
+            <span className="inline-block animate-[slideUp_1s_ease-out_0.4s_both]">Living</span>
           </h1>
-          <p className="text-xl md:text-2xl mb-10 text-gray-200 max-w-2xl mx-auto fade-in" style={{ animationDelay: '0.2s' }}>
+          <p className="text-xl md:text-2xl mb-10 text-gray-200 max-w-2xl mx-auto animate-[fadeInUp_1s_ease-out_0.6s_both]">
             Three generations of master craftsmen creating furniture that becomes family heirlooms
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center fade-in" style={{ animationDelay: '0.4s' }}>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-[fadeInUp_1s_ease-out_0.8s_both]">
             <Link to="/collections" className="btn-primary">
               Explore Our Collections
             </Link>
@@ -136,11 +139,11 @@ const HomePage = () => {
                   <img
                     src={room.image}
                     alt={room.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-600 ease-out"
                   />
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <h3 className="text-white text-xl font-semibold">{room.name}</h3>
+                    <h3 className="text-white text-xl font-semibold group-hover:text-emerald-300 transition-colors">{room.name}</h3>
                   </div>
                 </div>
               </Link>
@@ -163,24 +166,22 @@ const HomePage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProducts.slice(0, 3).map((product) => (
-              <Link
-                key={product.id}
-                to={`/product/${product.id}`}
-                className="group card-hover"
-              >
-                <div className="overflow-hidden rounded-lg mb-4 image-hover">
-                  <img
-                    src={product.images[0]}
-                    alt={product.name}
-                    className="w-full h-80 object-cover"
-                  />
-                </div>
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-emerald-800 transition-colors">
-                  {product.name}
-                </h3>
-                <p className="text-gray-600 text-sm mb-3">{product.collection.toUpperCase()}</p>
-                <p className="text-emerald-900 font-semibold">₹{product.price.toLocaleString('en-IN')}</p>
-              </Link>
+              <div key={product.id}>
+                <Link to={`/product/${product.id}`} className="block">
+                  <div className="overflow-hidden rounded-lg mb-4 image-hover card-hover">
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="w-full h-80 object-cover"
+                    />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 hover:text-emerald-800 transition-colors">
+                    {product.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-3">{product.collection.toUpperCase()}</p>
+                  <p className="text-emerald-900 font-semibold">₹{product.price.toLocaleString('en-IN')}</p>
+                </Link>
+              </div>
             ))}
           </div>
 

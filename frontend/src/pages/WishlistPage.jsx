@@ -1,46 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Trash2, Heart } from 'lucide-react';
-import { getWishlist, removeFromWishlist as removeFromWishlistAPI, getProducts } from '../services/api';
+import { getWishlist, removeFromWishlist, getProducts } from '../services/api';
 import { toast } from 'sonner';
 
 const WishlistPage = () => {
   const [wishlist, setWishlist] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadWishlist();
-    
-    const handleStorageChange = () => {
-      loadWishlist();
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    loadData();
   }, []);
 
-  const loadWishlist = async () => {
+  const loadData = async () => {
     try {
-      const wishlistIds = await getWishlist();
-      const allProducts = await getProducts();
-      const wishlistProducts = allProducts.filter(p => wishlistIds.includes(p.id));
-      setWishlist(wishlistProducts);
+      const [productsData] = await Promise.all([getProducts()]);
+      setProducts(productsData);
+      await loadWishlist(productsData);
     } catch (error) {
-      console.error('Error loading wishlist:', error);
+      console.error('Error loading data:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleRemoveFromWishlist = async (productId) => {
+  const loadWishlist = async (productsData = products) => {
     try {
-      await removeFromWishlistAPI(productId);
-      window.dispatchEvent(new Event('storage'));
-      loadWishlist();
-      toast.success('Removed from wishlist');
+      const wishlistIds = await getWishlist();
+      const wishlistProducts = productsData.filter(p => wishlistIds.includes(p.id));
+      setWishlist(wishlistProducts);
     } catch (error) {
-      toast.error('Failed to remove from wishlist');
+      console.error('Error loading wishlist:', error);
     }
+  };
+
+  const handleRemoveFromWishlist = async (productId) => {
+    // Update UI immediately
+    setWishlist(prev => prev.filter(p => p.id !== productId));
+    
+    await removeFromWishlist(productId);
+    toast.success('Removed from wishlist', { duration: 1500 });
   };
 
   if (loading) {
@@ -60,7 +60,11 @@ const WishlistPage = () => {
           </p>
         </div>
 
-        {wishlist.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-16">
+            <p className="text-xl">Loading...</p>
+          </div>
+        ) : wishlist.length === 0 ? (
           <div className="text-center py-16">
             <Heart className="w-24 h-24 mx-auto text-gray-300 mb-6" />
             <h2 className="text-2xl font-semibold mb-4">Your Wishlist is Empty</h2>
